@@ -24,6 +24,7 @@ public class ServerHandle
                 //ENEMIES
                 //load the enemies
                 EnemyManager.instance.LoadEnemiesOnClient(_fromClient);
+                NPCManager.instance.LoadNPCListOnClient(_fromClient);
 
 
 
@@ -87,16 +88,6 @@ public class ServerHandle
         GameServer.clients[_fromCID].player.focus.target = null;
     }
 
-    public static void RequestAttack(int _fromClient, Packet _packet)
-    {
-        int _fromCID = _packet.ReadInt();
-        int _eID = _packet.ReadInt();
-        int _damage = _packet.ReadInt();
-        Debug.Log($"Client {_fromCID} is trying to attack enemy: {EnemyManager.enemies[_eID].gameObject.name} for {_damage}.");
-
-        EnemyManager.enemies[_eID].GetComponent<EnemyStats>().TakeDamage(_eID, _damage);
-    }
-
     public static void RequestInteract(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();
@@ -108,13 +99,32 @@ public class ServerHandle
 
         if (_type == "Enemy")
         {
-            Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {EnemyManager.enemies[_eID].gameObject.name} from position {_comparePosition}.");
-            EnemyManager.enemies[_eID].GetComponent<Enemy>().Interact(_fromCID, _comparePosition);
+            
+            if(EnemyManager.enemies[_eID])
+            {
+                Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {EnemyManager.enemies[_eID].gameObject.name} from position {_comparePosition}.");
+                EnemyManager.enemies[_eID].GetComponent<Enemy>().Interact(_fromCID, _comparePosition);
+            }
+        }
+        else if (_type == "NPC")
+        {
+            
+            if (NPCManager.npcList[_eID] != null)
+            {
+                Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {null} from position {_comparePosition}.");
+                NPCManager.npcList[_eID].GetComponent<NPC>().Interact(_fromCID, _comparePosition);
+            }
+                
         }
         else if(_type == "Item")
         {
-            Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {ItemManager.instance.localItems[_eID]} from position {_comparePosition}.");
-            ItemManager.instance.localItems[_eID].GetComponent<ItemDrop>().Interact(_fromCID, _comparePosition);
+            
+            if (ItemManager.instance.localItems[_eID].GetComponent<ItemDrop>() != null)
+            {
+                Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {ItemManager.instance.localItems[_eID]} from position {_comparePosition}.");
+                ItemManager.instance.localItems[_eID].GetComponent<ItemDrop>().Interact(_fromCID, _comparePosition);
+            }
+                
         }
     }
 

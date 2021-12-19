@@ -107,6 +107,23 @@ public class ServerSend
         }
     }
 
+    //------------------------ NPC DATA
+
+    public static void SpawnNPC(GameObject _npc)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.spawnNPC))
+        {
+            _packet.Write(_npc.GetComponent<NPC>().id);
+            _packet.Write(_npc.GetComponent<NPC>().entityName);
+            _packet.Write(_npc.GetComponent<EntityStats>().maxHealth);
+            _packet.Write(_npc.GetComponent<EntityStats>().currentHealth);
+            _packet.Write(_npc.transform.position);
+            _packet.Write(_npc.transform.rotation);
+
+            SendTCPDataToAll(_packet);
+        }
+    }
+
     //ENEMY DATA
     public static void SpawnEnemy(GameObject _enemy)
     {
@@ -114,6 +131,8 @@ public class ServerSend
         {
             _packet.Write(_enemy.GetComponent<Enemy>().id);
             _packet.Write(_enemy.GetComponent<Enemy>().entityName);
+            _packet.Write(_enemy.GetComponent<EnemyStats>().maxHealth);
+            _packet.Write(_enemy.GetComponent<EnemyStats>().currentHealth);
             _packet.Write(_enemy.transform.position);
             _packet.Write(_enemy.transform.rotation);
 
@@ -127,8 +146,25 @@ public class ServerSend
         {
             _packet.Write(_enemy.GetComponent<Enemy>().id);
             _packet.Write(_enemy.GetComponent<Enemy>().entityName);
+            _packet.Write(_enemy.GetComponent<EnemyStats>().maxHealth);
+            _packet.Write(_enemy.GetComponent<EnemyStats>().currentHealth);
             _packet.Write(_enemy.transform.position);
             _packet.Write(_enemy.transform.rotation);
+
+            SendTcpData(_toCID, _packet);
+        }
+    }
+
+    public static void SendNPCData(int _toCID, GameObject _npc)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.loadNPCsOnClient))
+        {
+            _packet.Write(_npc.GetComponent<NPC>().id);
+            _packet.Write(_npc.GetComponent<NPC>().entityName);
+            _packet.Write(_npc.GetComponent<EntityStats>().maxHealth);
+            _packet.Write(_npc.GetComponent<EntityStats>().currentHealth);
+            _packet.Write(_npc.transform.position);
+            _packet.Write(_npc.transform.rotation);
 
             SendTcpData(_toCID, _packet);
         }
@@ -142,6 +178,17 @@ public class ServerSend
             _packet.Write(_enemy.GetComponent<EntityStats>().currentHealth);
 
             SendTCPDataToAll(_packet);
+        }
+    }
+
+    public static void UpdateEnemyPosition(GameObject _enemy)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.updateEnemyPosition))
+        {
+            _packet.Write(_enemy.GetComponent<Enemy>().id);
+            _packet.Write(_enemy.transform.position);
+
+            SendUDPDataToAll(_packet);
         }
     }
 

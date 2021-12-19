@@ -133,6 +133,9 @@ public class GameServer
 
         //ENEMY DATA
         EnemyManager.instance.InitEnemyData();
+
+        //NPC DATA
+        NPCManager.instance.InitNPCData();
         
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
@@ -141,7 +144,6 @@ public class GameServer
                 { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
                 { (int)ClientPackets.requestFocus, ServerHandle.FocusGranted },
                 { (int)ClientPackets.clearFocus, ServerHandle.ClearFocus },
-                { (int)ClientPackets.requestAttack, ServerHandle.RequestAttack },
                 { (int)ClientPackets.killEnemy, ServerHandle.KillEnemy},
                 { (int)ClientPackets.requestInteract, ServerHandle.RequestInteract},
                 { (int)ClientPackets.requestLoot, ServerHandle.OnLootRequested},

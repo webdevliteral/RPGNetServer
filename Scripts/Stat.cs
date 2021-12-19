@@ -14,9 +14,9 @@ public class Stat
 
     public int GetValue()
     {
-        //int finalValue = baseValue;
-        //modifiers.ForEach(x => finalValue += x);
-        return baseValue;
+        int finalValue = baseValue;
+        modifiers.ForEach(x => finalValue += x);
+        return finalValue;
     }
 
     public void SetValue(int _newValue)

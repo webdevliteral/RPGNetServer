@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: f4cf81223bfa3e64bbd93d53fc14876b, type: 2}
 --- !u!1 &146451875
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,9 +130,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 146451878}
+  - component: {fileID: 146451882}
+  - component: {fileID: 146451880}
   - component: {fileID: 146451879}
   - component: {fileID: 146451877}
   - component: {fileID: 146451876}
+  - component: {fileID: 146451881}
   m_Layer: 0
   m_Name: ServerManager
   m_TagString: Untagged
@@ -168,6 +171,8 @@ MonoBehaviour:
     type: 3}
   enemyPrefab: {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54,
     type: 3}
+  npcPrefab: {fileID: 8611467844914570594, guid: 8a3256f6f3a12a848a3443f4f31c64dc,
+    type: 3}
 --- !u!4 &146451878
 Transform:
   m_ObjectHideFlags: 0
@@ -196,6 +201,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54,
     type: 3}
+  enemyRespawnCooldown: 20
+--- !u!114 &146451880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146451875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56429fbcc9321f9488402e664ac007d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localItems: []
+--- !u!114 &146451881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146451875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5bf6f590ba4664c9f5967991cdff13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consumables: []
+  equipment:
+  - {fileID: 11400000, guid: 1135a3cf0301b1c46823d38926e75cfc, type: 2}
+--- !u!114 &146451882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146451875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee67f1a1108c7d54e81131f1105919d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcPrefab: {fileID: 8611467844914570594, guid: 8a3256f6f3a12a848a3443f4f31c64dc,
+    type: 3}
+  npcRespawnCooldown: 20
 --- !u!1 &170306121
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,12 +444,12 @@ GameObject:
   - component: {fileID: 293346808}
   - component: {fileID: 293346807}
   - component: {fileID: 293346806}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: path_start_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &293346805
 Transform:
@@ -489,12 +538,12 @@ GameObject:
   - component: {fileID: 424784828}
   - component: {fileID: 424784827}
   - component: {fileID: 424784826}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpawnPlat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &424784825
 Transform:
@@ -861,12 +910,12 @@ GameObject:
   - component: {fileID: 861307375}
   - component: {fileID: 861307374}
   - component: {fileID: 861307373}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EntranceRamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &861307372
 Transform:
@@ -1204,12 +1253,12 @@ GameObject:
   - component: {fileID: 1394718329}
   - component: {fileID: 1394718328}
   - component: {fileID: 1394718327}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ConnectToFirstPlat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1394718326
 Transform:
@@ -1521,12 +1570,12 @@ GameObject:
   - component: {fileID: 1878838813}
   - component: {fileID: 1878838812}
   - component: {fileID: 1878838811}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: path_start_forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1878838810
 Transform:
@@ -1708,12 +1757,12 @@ GameObject:
   - component: {fileID: 1957725731}
   - component: {fileID: 1957725730}
   - component: {fileID: 1957725729}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: path_start_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1957725728
 Transform:
@@ -1802,12 +1851,12 @@ GameObject:
   - component: {fileID: 1991002434}
   - component: {fileID: 1991002433}
   - component: {fileID: 1991002432}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FirstPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1991002431
 Transform:

@@ -7,12 +7,17 @@ using UnityEngine;
 
 public class Enemy : NPC
 {
+    EnemyStats myStats;
     public Enemy(int _id, string _name)
     {
         id = _id;
         entityName = _name;
     }
 
+    void Start()
+    {
+        myStats = GetComponent<EnemyStats>();
+    }
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
         if (GameServer.clients[_fromCID].player != null)
@@ -23,7 +28,11 @@ public class Enemy : NPC
             {
                 string _msg = $"You are now interacting with: {GetComponent<Enemy>().entityName}";
 
-                GetComponent<EnemyStats>().TakeDamage(_fromCID, 20);                    
+                Combat playerCombat = GameServer.clients[_fromCID].player.GetComponent<Combat>();
+
+                if(playerCombat != null)
+                    playerCombat.Attack(myStats);
+                
                 ServerSend.InteractionConfirmed(_fromCID, GetComponent<Enemy>().id, _msg);
                 return true;
             }

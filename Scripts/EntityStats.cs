@@ -21,7 +21,7 @@ public class EntityStats : MonoBehaviour
     {
         
     }
-    public void TakeDamage(int _eID, int _damage)
+    public void TakeDamage(int _damage)
     {
         _damage -= armor.GetValue();
         _damage = Mathf.Clamp(_damage, 0, int.MaxValue);

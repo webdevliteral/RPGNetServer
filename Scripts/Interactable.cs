@@ -22,7 +22,7 @@ public class Interactable : MonoBehaviour
 
                 Debug.Log($"{GameServer.clients[_fromCID].player.username} is focusing {transform.name}");
                 float distance = Vector3.Distance(_comparePosition, transform.position);
-                if (distance <= interactRadius)
+                if (distance <= interactRadius && hasInteracted == false)
                 {
                     Debug.Log($"{GameServer.clients[_fromCID].player.username} is in range of {transform.position}");
                     return true;

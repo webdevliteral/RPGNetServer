@@ -18,8 +18,8 @@ public class ItemDrop : Interactable
 
             if(pickedUp)
             {
-                Destroy(ItemManager.instance.localItems[id]);
                 ServerSend.ItemLooted(_fromCID, id, item.id);
+                Destroy(ItemManager.instance.localItems[id].gameObject);
                 return true;
             }            
             

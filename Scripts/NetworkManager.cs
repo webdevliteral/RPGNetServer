@@ -10,6 +10,7 @@ public class NetworkManager : MonoBehaviour
     public static NetworkManager instance;
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
+    public GameObject npcPrefab;
     public static string setPName;
     void Awake()
     {
@@ -44,6 +45,11 @@ public class NetworkManager : MonoBehaviour
     public GameObject InstantiateEnemy(float x, float y, float z)
     {
         return Instantiate(enemyPrefab, new Vector3(x, y, z), Quaternion.identity);
+    }
+
+    public GameObject InstantiateNPC(float x, float y, float z)
+    {
+        return Instantiate(npcPrefab, new Vector3(x, y, z), Quaternion.identity);
     }
 
     public static bool AttemptNewSession(string _username, string _password)

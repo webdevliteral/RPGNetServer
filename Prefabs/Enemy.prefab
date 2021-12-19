@@ -88,9 +88,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212606147804292961}
-  - component: {fileID: 7474231715138914666}
+  - component: {fileID: 3852461386853265974}
   - component: {fileID: 3013900500313223034}
   - component: {fileID: 4080737244005278309}
+  - component: {fileID: 914026757338584785}
+  - component: {fileID: 3295653811711352889}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -113,24 +115,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &7474231715138914666
-CharacterController:
+--- !u!114 &3852461386853265974
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8611467844914570594}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88baf260392e42d4391b885affb6cdd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: -9.18
+  moveSpeed: 5
+  jumpSpeed: 5
+  lookRadius: 6
 --- !u!114 &3013900500313223034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 970bb08bb36559142b6b97aa2c073422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 20
   currentHealth: 100
   damage:
     baseValue: 0
@@ -170,3 +170,35 @@ MonoBehaviour:
     baseValue: 0
   lootDrops:
   - {fileID: 284073984168042100, guid: c1ca30307112da348ac4b844f1bfcb58, type: 3}
+--- !u!114 &914026757338584785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92ec9c99732416418b4c618e07d1e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSpeed: 1
+  castSpeed: 0
+--- !u!143 &3295653811711352889
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}

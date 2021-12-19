@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 257345741035949171}
   - component: {fileID: 1389609434891966730}
   - component: {fileID: 1549596798853889766}
+  - component: {fileID: 4275847527765037165}
   - component: {fileID: 8021349615318193849}
   - component: {fileID: 7474231715138914666}
   m_Layer: 0
@@ -163,9 +164,23 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   damage:
-    baseValue: 0
+    baseValue: 5
   armor:
     baseValue: 0
+--- !u!114 &4275847527765037165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92ec9c99732416418b4c618e07d1e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSpeed: 1
+  castSpeed: 0
 --- !u!114 &8021349615318193849
 MonoBehaviour:
   m_ObjectHideFlags: 0
