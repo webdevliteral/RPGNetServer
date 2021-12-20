@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 
     public Focus focus;
     public Inventory inventory;
-
+    public EquipmentManager equipmentManager;
     public int id;
     public string username;
     public CharacterController charControl;
@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     {
         if (inventory == null)
             inventory = gameObject.AddComponent<Inventory>();
+        if(equipmentManager == null)
+            equipmentManager = gameObject.AddComponent<EquipmentManager>();
         gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
         moveSpeed *= Time.fixedDeltaTime;
         jumpSpeed *= Time.fixedDeltaTime;

@@ -21,16 +21,17 @@ public class Inventory : MonoBehaviour
             return false;
         }
         items.Add(_item);
-        if (onItemChangedCallback != null)
-            onItemChangedCallback.Invoke();
+        
+        onItemChangedCallback?.Invoke();
+
         Debug.Log($"ID: {_item} was added to {GetComponent<Player>().username}s inventory.");
         return true;
     }
 
     public void Remove(Item item)
     {
+        
         items.Remove(item);
-        if (onItemChangedCallback != null)
-            onItemChangedCallback.Invoke();
+        onItemChangedCallback?.Invoke();
     }
 }

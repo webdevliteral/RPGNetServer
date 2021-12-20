@@ -10,12 +10,13 @@ public class Item : ScriptableObject
 
     public virtual void Use(int _fromCID)
     {
-        Debug.Log($"{GameServer.clients[_fromCID].player.username} used item: {name}");
+        Debug.Log($"{NetworkManager.instance.Server.Clients[_fromCID].player.username} used item: {name}");
         Dispose(_fromCID);
     }
 
     public void Dispose(int _fromCID)
     {
-        GameServer.clients[_fromCID].player.GetComponent<Inventory>().Remove(this);
+        Debug.Log("DISPOSING!");
+        NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Inventory>().items.Remove(this);
     }
 }

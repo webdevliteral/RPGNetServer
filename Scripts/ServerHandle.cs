@@ -19,7 +19,7 @@ public class ServerHandle
             {
                 //PLAYER DATA
                 ServerSend.UserSession(_fromClient, NetworkManager.setPName);
-                GameServer.clients[_fromClient].SpawnInGame(NetworkManager.setPName);
+                NetworkManager.instance.Server.Clients[_fromClient].SpawnInGame(NetworkManager.setPName);
 
                 //ENEMIES
                 //load the enemies
@@ -29,11 +29,11 @@ public class ServerHandle
 
 
 
-                Debug.Log($"{GameServer.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully with client: {_fromClient} as {NetworkManager.setPName}.");
+                Debug.Log($"{NetworkManager.instance.Server.Clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully with client: {_fromClient} as {NetworkManager.setPName}.");
             }
             else
             {
-                Debug.Log($"{GameServer.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} tried to login from client: {_fromClient} but failed to authorize.");
+                Debug.Log($"{NetworkManager.instance.Server.Clients[_fromClient].tcp.socket.Client.RemoteEndPoint} tried to login from client: {_fromClient} but failed to authorize.");
             }
         }
         catch (Exception _ex)
@@ -66,7 +66,7 @@ public class ServerHandle
             _inputs[i] = _packet.ReadBool();
         }
         Quaternion _rotation = _packet.ReadQuaternion();
-        GameServer.clients[_fromClient].player.SetInput(_inputs, _rotation);
+        NetworkManager.instance.Server.Clients[_fromClient].player.SetInput(_inputs, _rotation);
     }
 
     public static void FocusGranted(int _fromClient, Packet _packet)
@@ -85,60 +85,83 @@ public class ServerHandle
     {
         int _fromCID = _packet.ReadInt();
         Debug.Log($"Client {_fromCID} cleared their focus.");
-        GameServer.clients[_fromCID].player.focus.target = null;
+        NetworkManager.instance.Server.Clients[_fromCID].player.focus.target = null;
     }
 
     public static void RequestInteract(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();
         int _eID = _packet.ReadInt();
-        string _type = _packet.ReadString();
-        Vector3 _comparePosition = GameServer.clients[_fromCID].player.transform.position;
+        int _type = _packet.ReadInt();
+        Vector3 _playerPosition = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position;
+        InteractionType interaction = (InteractionType)_type;
 
-        
 
-        if (_type == "Enemy")
+        Debug.Log($"Interaction type {interaction}");
+        switch(interaction)
         {
-            
-            if(EnemyManager.enemies[_eID])
-            {
-                Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {EnemyManager.enemies[_eID].gameObject.name} from position {_comparePosition}.");
-                EnemyManager.enemies[_eID].GetComponent<Enemy>().Interact(_fromCID, _comparePosition);
-            }
+            case InteractionType.Enemy:
+                if(EnemyManager.enemies.TryGetValue(_eID, out GameObject enemy))
+                    enemy.GetComponent<Enemy>().Interact(_fromCID, _playerPosition); 
+                break;
+            case InteractionType.Item:
+                GameObject item = FindItemInLocalItems(_fromCID, _eID);
+                if (item != null)
+                    item.GetComponent<ItemDrop>().Interact(_fromCID, _playerPosition);
+                break;
+            case InteractionType.NPC:
+                if (NPCManager.npcList.TryGetValue(_eID, out GameObject npc))
+                    npc.GetComponent<NPC>().Interact(_fromCID, _playerPosition);
+                break;
         }
-        else if (_type == "NPC")
+    }
+
+    private static GameObject FindItemInLocalItems(int _fromCID, int _eID)
+    {
+        for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
         {
-            
-            if (NPCManager.npcList[_eID] != null)
+            if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == _eID)
             {
-                Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {null} from position {_comparePosition}.");
-                NPCManager.npcList[_eID].GetComponent<NPC>().Interact(_fromCID, _comparePosition);
+                return ItemManager.instance.localItems[i];
+                //We don't want to spam use items if we have multiple,
+                //so just return out of the method after first use
             }
-                
-        }
-        else if(_type == "Item")
-        {
-            
-            if (ItemManager.instance.localItems[_eID].GetComponent<ItemDrop>() != null)
+            else
             {
-                Debug.Log($"Client {_fromCID} is trying to interact with an {_type}: {ItemManager.instance.localItems[_eID]} from position {_comparePosition}.");
-                ItemManager.instance.localItems[_eID].GetComponent<ItemDrop>().Interact(_fromCID, _comparePosition);
+                Debug.Log("That item doesn't exist in the players inventory...");
             }
-                
+
         }
+        return null;
     }
 
     public static void OnLootRequested(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();
         int _itemID = _packet.ReadInt();
-        Vector3 _comparePosition = GameServer.clients[_fromCID].player.transform.position;
+        Vector3 _playerPosition = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position;
 
         Debug.Log($"Client {_fromCID} is trying to loot item with ID: {_itemID}.");
         //TODO: create a list of global items somewhere so i can
         //add a global reference to the players instance of inventory
-        ItemManager.instance.localItems[_itemID].GetComponent<ItemDrop>().Interact(_fromCID, _comparePosition);
-        //GameServer.clients[_fromCID].player.inventory.Add(GlobalItemDB.instance.globalItems[_itemID]);
+        for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
+        {
+            if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == _itemID)
+            {
+                ItemManager.instance.localItems[i].GetComponent<ItemDrop>().Interact(_fromCID, _playerPosition);
+                //We don't want to spam use items if we have multiple,
+                //so just return out of the method after first use
+                return;
+            }
+            else
+            {
+                Debug.Log("That item doesn't exist in the players inventory...");
+            }
+
+        }
+        
+        
+        //NetworkManager.instance.Access.Clients[_fromCID].player.inventory.Add(GlobalItemDB.instance.globalItems[_itemID]);
     }
 
     public static void OnUseItemRequested(int _fromClient, Packet _packet)
@@ -146,13 +169,13 @@ public class ServerHandle
         int _fromCID = _packet.ReadInt();
         int _itemID = _packet.ReadInt();
         string _itemName = _packet.ReadString();
+        Inventory _playerInventory = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Inventory>();
 
-        for(int i = 0; i < GameServer.clients[_fromCID].player.GetComponent<Inventory>().items.Count; i++)
+        for (int i = 0; i < _playerInventory.items.Count; i++)
         {
-            if(GameServer.clients[_fromCID].player.GetComponent<Inventory>().items[i].id == _itemID)
+            if(_playerInventory.items[i].id == _itemID)
             {
-                Debug.Log($"{GameServer.clients[_fromCID].player.username} used item {_itemName}");
-                GameServer.clients[_fromCID].player.GetComponent<Inventory>().items[i].Use(_fromCID);
+                _playerInventory.items[i].Use(_fromCID);
                 //We don't want to spam use items if we have multiple,
                 //so just return out of the method after first use
                 return;
@@ -163,19 +186,20 @@ public class ServerHandle
             }
             
         }
-        //GameServer.clients[_fromCID].player.GetComponent<Inventory>().items[].id;
+        //NetworkManager.instance.Access.Clients[_fromCID].player.GetComponent<Inventory>().items[].id;
     }
 
     public static void OnEquipItemRequested(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();
         int _itemID = _packet.ReadInt();
+        Inventory _playerInventory = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Inventory>();
 
-        for (int i = 0; i < GameServer.clients[_fromCID].player.GetComponent<Inventory>().items.Count; i++)
+        for (int i = 0; i < _playerInventory.items.Count; i++)
         {
-            if (GameServer.clients[_fromCID].player.GetComponent<Inventory>().items[i].id == _itemID)
+            if (_playerInventory.items[i].id == _itemID)
             {
-                Debug.Log($"{GameServer.clients[_fromCID].player.username} equipped item {GameServer.clients[_fromCID].player.GetComponent<Inventory>().items[i].name}");
+                Debug.Log($"{NetworkManager.instance.Server.Clients[_fromCID].player.username} equipped item {_playerInventory.items[i].name}");
                 
                 //We don't want to spam use items if we have multiple,
                 //so just return out of the method after first use
@@ -187,7 +211,7 @@ public class ServerHandle
             }
 
         }
-        //GameServer.clients[_fromCID].player.GetComponent<Inventory>().items[].id;
+        //NetworkManager.instance.Access.Clients[_fromCID].player.GetComponent<Inventory>().items[].id;
     }
 
     public static void KillEnemy(int _fromClient, Packet _packet)

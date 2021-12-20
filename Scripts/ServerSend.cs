@@ -10,32 +10,34 @@ public class ServerSend
     private static void SendTcpData(int _toCID, Packet _packet)
     {
         _packet.WriteLength();
-        GameServer.clients[_toCID].tcp.SendData(_packet);
+        NetworkManager.instance.Server.Clients[_toCID].tcp.SendData(_packet);
     }
 
     private static void SendUdpData(int _toCID, Packet _packet)
     {
         _packet.WriteLength();
-        GameServer.clients[_toCID].udp.SendData(_packet);
+        NetworkManager.instance.Server.Clients[_toCID].udp.SendData(_packet);
     }
 
     private static void SendTCPDataToAll(Packet _packet)
     {
         _packet.WriteLength();
-        for (int i = 1; i < GameServer.MaxPlayers; i++)
+        for (int i = 1; i < NetworkManager.instance.Server.Clients.Count; i++)
         {
-            GameServer.clients[i].tcp.SendData(_packet);
+            if (NetworkManager.instance.Server.Clients[i].player != null)
+                NetworkManager.instance.Server.Clients[i].tcp.SendData(_packet);
         }
     }
 
     private static void SendTCPDataToAllExceptOne(int _exceptClient, Packet _packet)
     {
         _packet.WriteLength();
-        for (int i = 1; i < GameServer.MaxPlayers; i++)
+        for (int i = 1; i < NetworkManager.instance.Server.Clients.Count; i++)
         {
             if (i != _exceptClient)
             {
-                GameServer.clients[i].tcp.SendData(_packet);
+                if (NetworkManager.instance.Server.Clients[i].player != null)
+                    NetworkManager.instance.Server.Clients[i].tcp.SendData(_packet);
             }
 
         }
@@ -44,20 +46,22 @@ public class ServerSend
     private static void SendUDPDataToAll(Packet _packet)
     {
         _packet.WriteLength();
-        for (int i = 1; i < GameServer.MaxPlayers; i++)
+        for (int i = 1; i < NetworkManager.instance.Server.Clients.Count; i++)
         {
-            GameServer.clients[i].udp.SendData(_packet);
+            if (NetworkManager.instance.Server.Clients[i].player != null)
+                NetworkManager.instance.Server.Clients[i].udp.SendData(_packet);
         }
     }
 
     private static void SendUDPDataToAllExceptOne(int _exceptClient, Packet _packet)
     {
         _packet.WriteLength();
-        for (int i = 1; i < GameServer.MaxPlayers; i++)
+        for (int i = 1; i < NetworkManager.instance.Server.Clients.Count; i++)
         {
             if (i != _exceptClient)
             {
-                GameServer.clients[i].udp.SendData(_packet);
+                if (NetworkManager.instance.Server.Clients[i].player != null)
+                    NetworkManager.instance.Server.Clients[i].udp.SendData(_packet);
             }
 
         }
@@ -181,12 +185,12 @@ public class ServerSend
         }
     }
 
-    public static void UpdateEnemyPosition(GameObject _enemy)
+    public static void UpdateEnemyPosition(int _id, Vector3 _position)
     {
         using (Packet _packet = new Packet((int)ServerPackets.updateEnemyPosition))
         {
-            _packet.Write(_enemy.GetComponent<Enemy>().id);
-            _packet.Write(_enemy.transform.position);
+            _packet.Write(_id);
+            _packet.Write(_position);
 
             SendUDPDataToAll(_packet);
         }

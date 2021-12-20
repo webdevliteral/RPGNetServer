@@ -7,7 +7,7 @@ public class PlayerStats : EntityStats
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<EquipmentManager>().onEquipmentChanged += OnEquipmentChanged;
+        GetComponent<EquipmentManager>().OnEquipmentChanged += OnEquipmentChanged;
     }
 
     void OnEquipmentChanged(RegularEquipment newItem, RegularEquipment oldItem)

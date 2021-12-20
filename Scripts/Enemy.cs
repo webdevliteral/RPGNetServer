@@ -8,11 +8,6 @@ using UnityEngine;
 public class Enemy : NPC
 {
     EnemyStats myStats;
-    public Enemy(int _id, string _name)
-    {
-        id = _id;
-        entityName = _name;
-    }
 
     void Start()
     {
@@ -20,18 +15,22 @@ public class Enemy : NPC
     }
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
-        if (GameServer.clients[_fromCID].player != null)
+        if (NetworkManager.instance.Server.Clients[_fromCID].player != null)
         {
             
             //Debug.Log($"Client {_fromCID} is trying to interact with an enemy from position {_comparePosition}");
             if (base.Interact(_fromCID, _comparePosition))
             {
-                string _msg = $"You are now interacting with: {GetComponent<Enemy>().entityName}";
+                string _msg = $"You are now interacting with: {entityName}";
 
-                Combat playerCombat = GameServer.clients[_fromCID].player.GetComponent<Combat>();
+                Combat playerCombat = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Combat>();
 
                 if(playerCombat != null)
+                {
                     playerCombat.Attack(myStats);
+                    ServerSend.UpdateEnemyStats(gameObject);
+                }
+                    
                 
                 ServerSend.InteractionConfirmed(_fromCID, GetComponent<Enemy>().id, _msg);
                 return true;
@@ -46,13 +45,6 @@ public class Enemy : NPC
             return false;
         }
             
-    }
-    public void SpawnInGame()
-    {
-        if(this != null)
-        {
-            ServerSend.SpawnEnemy(gameObject);
-        }
     }
 }
 

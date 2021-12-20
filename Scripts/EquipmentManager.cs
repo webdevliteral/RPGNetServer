@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
     public static EquipmentManager instance;
-    public delegate void OnEquipmentChanged(RegularEquipment newItem, RegularEquipment oldItem);
-    public OnEquipmentChanged onEquipmentChanged;
+    public event Action<RegularEquipment, RegularEquipment> OnEquipmentChanged;
     Inventory inventory;
     private void Awake()
     {
@@ -33,11 +33,11 @@ public class EquipmentManager : MonoBehaviour
         if (equipped[slotIndex] != null)
         {
             oldItem = equipped[slotIndex];
-            GetComponent<Inventory>().Add(oldItem);
+            inventory.Add(oldItem);
         }
-
-        if (onEquipmentChanged != null)
-            onEquipmentChanged.Invoke(equipItem, oldItem);
+        
+        if(OnEquipmentChanged != null)
+            OnEquipmentChanged.Invoke(equipItem, oldItem);
 
         equipped[slotIndex] = equipItem;
     }
@@ -49,8 +49,8 @@ public class EquipmentManager : MonoBehaviour
             RegularEquipment oldItem = equipped[slotIndex];
             inventory.Add(oldItem);
             equipped[slotIndex] = null;
-            if (onEquipmentChanged != null)
-                onEquipmentChanged.Invoke(null, oldItem);
+            if (OnEquipmentChanged != null)
+                OnEquipmentChanged.Invoke(null, oldItem);
         }
     }
 

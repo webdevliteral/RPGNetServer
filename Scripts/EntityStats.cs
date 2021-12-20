@@ -28,7 +28,6 @@ public class EntityStats : MonoBehaviour
 
         currentHealth -= _damage;
         Debug.Log($"{transform.name} took {_damage} damage and now has {currentHealth} health. {armor.GetValue()} armor affected this hit.");
-        ServerSend.UpdateEnemyStats(gameObject);
         if (currentHealth <= 0)
         {
             HandleDeath();

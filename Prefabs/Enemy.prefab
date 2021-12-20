@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212606147804292961}
-  - component: {fileID: 3852461386853265974}
+  - component: {fileID: 5544674004553184688}
   - component: {fileID: 3013900500313223034}
   - component: {fileID: 4080737244005278309}
   - component: {fileID: 914026757338584785}
@@ -115,7 +115,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3852461386853265974
+--- !u!114 &5544674004553184688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,9 +124,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8611467844914570594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88baf260392e42d4391b885affb6cdd1, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a812cd2e03e4534f97e7f4c47ac8bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
   gravity: -9.18
   moveSpeed: 5
   jumpSpeed: 5
@@ -147,6 +150,7 @@ MonoBehaviour:
   isFocused: 0
   hasInteracted: 0
   interactRadius: 0
+  interactionType: 0
   entityName: 
   gravity: 0
   moveSpeed: 0

@@ -24,7 +24,7 @@ public class NPC : Interactable
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
-        if (GameServer.clients[_fromCID].player != null)
+        if (NetworkManager.instance.Server.Clients[_fromCID].player != null)
         {
 
             //Debug.Log($"Client {_fromCID} is trying to interact with an enemy from position {_comparePosition}");
@@ -49,10 +49,7 @@ public class NPC : Interactable
 
     public void SpawnInGame()
     {
-        if (this != null)
-        {
             ServerSend.SpawnNPC(gameObject);
-        }
     }
 }
 

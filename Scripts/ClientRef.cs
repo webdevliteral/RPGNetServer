@@ -9,7 +9,7 @@ public class ClientRef
 {
     public static int dataBufferSize = 4096;
 
-    //define scoped variables
+    
     public int CID;
     public Player player;
     public Enemy enemy;
@@ -65,7 +65,6 @@ public class ClientRef
         }
 
         //Send some data using packets
-        //REFERENCES: ServerSend.cs -> Packet.cs
         public void SendData(Packet _packet)
         {
             try
@@ -91,7 +90,7 @@ public class ClientRef
                 //make sure some data actually made a transaction
                 if (_byteLength <= 0)
                 {
-                    GameServer.clients[cid].Disconnect();
+                    NetworkManager.instance.Server.Clients[cid].Disconnect();
                     //TODO: handle empty connections
                     return;
                 }
@@ -103,7 +102,9 @@ public class ClientRef
                 Array.Copy(receiveBuffer, _data, _byteLength);
 
                 //TODO: handle that data
-                receiveData.Reset(HandleData(_data));
+                HandleData(_data);
+                receiveData.Reset();
+
                 //FORNOW: just keep reading data from the stream
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
@@ -114,7 +115,7 @@ public class ClientRef
             }
         }
 
-        private bool HandleData(byte[] _data)
+        private void HandleData(byte[] _data)
         {
             int _packetLength = 0;
             //set receivedData to the bytes from our tcp byteStream
@@ -129,7 +130,7 @@ public class ClientRef
                 if (_packetLength < 1)
                     //there isn't much left of the packet,
                     //so we return true in order to reset data
-                    return true;
+                    return;
             }
 
             while (_packetLength > 0 && _packetLength <= receiveData.UnreadLength())
@@ -143,25 +144,10 @@ public class ClientRef
                     using (Packet _packet = new Packet(_packetBytes))
                     {
                         int _packetId = _packet.ReadInt();
-                        GameServer.packetHandlers[_packetId](cid, _packet);
+                        NetworkManager.instance.Server.PacketHandlers[_packetId](cid, _packet);
                     }
                 });
-
-                _packetLength = 0;
-                if (receiveData.UnreadLength() >= 4)
-                {
-                    _packetLength = receiveData.ReadInt();
-                    if (_packetLength < 1)
-                        //there isn't much left of the packet,
-                        //so we return true in order to reset data
-                        return true;
-                }
             }
-
-            if (_packetLength <= 1)
-                return true;
-
-            return false;
         }
 
         public void Disconnect()
@@ -193,7 +179,7 @@ public class ClientRef
 
         public void SendData(Packet _packet)
         {
-            GameServer.SendUDPData(endPoint, _packet);
+            NetworkManager.instance.Server.SendUDPData(endPoint, _packet);
         }
 
         public void HandleData(Packet _packetData)
@@ -205,7 +191,7 @@ public class ClientRef
                 using (Packet _packet = new Packet(_packetBytes))
                 {
                     int _packetId = _packet.ReadInt();
-                    GameServer.packetHandlers[_packetId](cid, _packet);
+                    NetworkManager.instance.Server.PacketHandlers[_packetId](cid, _packet);
                 }
             });
         }
@@ -220,7 +206,7 @@ public class ClientRef
     {
         player = NetworkManager.instance.InstantiatePlayer();
         player.Initialize(CID, _playerName);
-        foreach (ClientRef _client in GameServer.clients.Values)
+        foreach (ClientRef _client in NetworkManager.instance.Server.Clients.Values)
         {
             if (_client.player != null)
             {
@@ -228,14 +214,10 @@ public class ClientRef
                 {
                     ServerSend.SpawnPlayer(CID, _client.player);
                 }
-            }
-        }
-
-        foreach (ClientRef _client in GameServer.clients.Values)
-        {
-            if (_client.player != null)
-            {
-                ServerSend.SpawnPlayer(_client.CID, player);
+                else
+                {
+                    ServerSend.SpawnPlayer(_client.CID, player);
+                }
             }
         }
     }

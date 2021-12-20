@@ -39,7 +39,7 @@ public class EnemyManager : MonoBehaviour
         //init the enemies in the scene
 
         //Define an empty enemy prefab
-        GameObject enemy = NetworkManager.instance.InstantiateEnemy(0.16f, -5.3f, 25.0f);
+        GameObject enemy = NetworkManager.instance.InstantiateEnemy(0.16f, 1.0f, 15.0f);
         
         //Define that enemy's traits
         enemy.GetComponent<Enemy>().id = 0;
@@ -55,13 +55,21 @@ public class EnemyManager : MonoBehaviour
             // TODO: create a method for each enemy that returns an enemy
             // gObject which can be added to the list
 
-        GameObject difEnemy = NetworkManager.instance.InstantiateEnemy(0.16f, -5.3f, 44.7f);
+        GameObject difEnemy = NetworkManager.instance.InstantiateEnemy(1.32f, 1.0f, 18.7f);
         difEnemy.GetComponent<Enemy>().id = 1;
         difEnemy.GetComponent<Enemy>().entityName = "SauceMama";
         difEnemy.GetComponent<Enemy>().interactRadius = 5f;
 
 
         enemies.Add(1, difEnemy);
+
+        GameObject difEnemy2 = NetworkManager.instance.InstantiateEnemy(-5.32f, 1.0f, 11.7f);
+        difEnemy2.GetComponent<Enemy>().id = 2;
+        difEnemy2.GetComponent<Enemy>().entityName = "ImHard";
+        difEnemy2.GetComponent<Enemy>().interactRadius = 5f;
+
+
+        enemies.Add(2, difEnemy2);
 
         for (int i = 0; i < enemies.Count; i++)
         {

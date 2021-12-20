@@ -6,8 +6,8 @@ using UnityEngine;
 
 public enum ServerPackets
 {
-    welcome = 1,
-    userSession = 3,
+    welcome,
+    userSession,
     spawnPlayer,
     playerPosition,
     playerRotation,
@@ -33,9 +33,9 @@ public enum ServerPackets
 //Sent from client to server.
 public enum ClientPackets
 {
-    welcomeReceived = 1,
+    welcomeReceived,
     playerMovement,
-    userSessionConfirmed = 3,
+    userSessionConfirmed,
     enemySpawned,
     loadEnemyData,
     clearFocus,
@@ -125,18 +125,11 @@ public class Packet : IDisposable
 
         /// Resets the packet instance to allow it to be reused.
         /// <param name="_shouldReset">Whether or not to reset the packet.</param>
-        public void Reset(bool _shouldReset = true)
+        public void Reset()
         {
-            if (_shouldReset)
-            {
-                buffer.Clear(); // Clear buffer
-                readableBuffer = null;
-                readPos = 0; // Reset readPos
-            }
-            else
-            {
-                readPos -= 4; // "Unread" the last read int
-            }
+            buffer.Clear(); // Clear buffer
+            readableBuffer = null;
+            readPos = 0; // Reset readPos
         }
         #endregion
 

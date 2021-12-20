@@ -12,6 +12,9 @@ public class NetworkManager : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject npcPrefab;
     public static string setPName;
+
+    private readonly GameServer server = new GameServer();
+    public GameServer Server => server;
     void Awake()
     {
         if(instance == null)
@@ -27,14 +30,15 @@ public class NetworkManager : MonoBehaviour
 
     private void Start()
     {
+        //These settings enable to server to run PER_TICK
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = Constants.targetFPS;
-        GameServer.StartServer(10, 3600);
+        Application.targetFrameRate = Constants.TARGET_FPS;
+        server.StartServer(10, 3600);
     }
 
     private void OnApplicationQuit()
     {
-        GameServer.Stop();
+        server.Stop();
     }
 
     public Player InstantiatePlayer()
@@ -55,7 +59,7 @@ public class NetworkManager : MonoBehaviour
     public static bool AttemptNewSession(string _username, string _password)
     {
         string accountJSON = ConnectAndAuth(_username, _password);
-        string _sessionPlayerName = JSON.HandleUserJSON(accountJSON);
+        string _sessionPlayerName = AccountData.HandleUserJSON(accountJSON);
         if (_sessionPlayerName != null)
         {
             setPName = _sessionPlayerName;
@@ -72,20 +76,19 @@ public class NetworkManager : MonoBehaviour
         return HTTP.GET(url);
     }
 
-    class JSON
+    struct AccountData
     {
-        class AccountData
-        {
-            public string email;
-            public string password;
-            public string username;
-        }
+        public string email;
+        public string password;
+        public string username;
+
         public static string HandleUserJSON(string _json)
         {
             AccountData jObj = JsonUtility.FromJson<AccountData>(_json);
             return jObj.username;
         }
     }
+    
 
     class HTTP
     {

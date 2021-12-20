@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3554109758470739974}
   - component: {fileID: 7791124450410057734}
   m_Layer: 0
-  m_Name: Collider
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,9 +92,8 @@ GameObject:
   - component: {fileID: 1389609434891966730}
   - component: {fileID: 1549596798853889766}
   - component: {fileID: 4275847527765037165}
-  - component: {fileID: 8021349615318193849}
   - component: {fileID: 7474231715138914666}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,6 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   focus: {fileID: 0}
   inventory: {fileID: 0}
+  equipmentManager: {fileID: 0}
   id: 0
   username: 
   charControl: {fileID: 7474231715138914666}
@@ -181,18 +181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackSpeed: 1
   castSpeed: 0
---- !u!114 &8021349615318193849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8611467844914570594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b47a2eb38ce51c346b2401ca8344a45f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!143 &7474231715138914666
 CharacterController:
   m_ObjectHideFlags: 0

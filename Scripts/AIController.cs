@@ -9,12 +9,15 @@ using UnityEngine.AI;
 class AIController : MonoBehaviour
 {
     CharacterController controller;
+    [SerializeField]
+    private LayerMask _playerLayer; 
     public float gravity = -9.18f;
     public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
     private float yVelocity = 0;
     public float lookRadius = 6f;
-    Player target;
+    protected float _stopDistance = 2.0f;
+    protected Transform target;
     //Transform target;
     //NavMeshAgent agent;
 
@@ -22,66 +25,26 @@ class AIController : MonoBehaviour
     {
         //agent = GetComponent<NavMeshAgent>();
         controller = GetComponent<CharacterController>();
+        moveSpeed *= Time.fixedDeltaTime;
     }
 
-    void FixedUpdate()
+    protected void SearchForPlayersInsideRadius()
     {
-        if(target == null)
-            SearchForPlayersInsideRadius();
-        if (target != null)
+        //Define what happens if you're in the search radius AND
+        //you can draw a line from enemy to player
+        Collider[] hits = Physics.OverlapSphere(transform.position, lookRadius, _playerLayer);
+        foreach (Collider hit in hits)
         {
-            Vector3 _direction = target.transform.position - transform.position;
-            if (TargetInLineOfSight())
-                Move(_direction, moveSpeed);
+            target = hit.transform;
         }
     }
 
-    private void SearchForPlayersInsideRadius()
+
+    protected void Move(Vector3 _direction, float _speed)
     {
-        foreach(ClientRef _client in GameServer.clients.Values)
-        {
-            if(_client.player != null)
-            {
-                Vector3 playerPos = _client.player.transform.position;
-                Vector3 _direction = playerPos - transform.position;
-                //float distance = Vector3.Distance(playerPos, transform.position);
-                
-                if (_direction.magnitude <= lookRadius)
-                {
-                    //Debug.Log("Player near enemy search radius!");
-                    if (Physics.Raycast(transform.position, playerPos, out RaycastHit _hit, lookRadius))
-                    {
-                        //Define what happens if you're in the search radius AND
-                        //you can draw a line from enemy to player
-                        target = _hit.collider.GetComponent<Player>();  
-                    }
-                }
-            }
-        }
-    }
-
-    private bool TargetInLineOfSight()
-    {
-        if (target == null)
-            return false;
-
-        if(Physics.Raycast(transform.position, target.transform.position - transform.position, out RaycastHit _hit, lookRadius))
-        {
-            if(_hit.collider != null)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void Move(Vector3 _direction, float _speed)
-    {
-        
         _direction.y = 0f;
         transform.forward = _direction;
-        Vector3 _movement = transform.forward * _speed;
+        Vector3 _movement =transform.forward * _speed;
 
         if(controller.isGrounded)
         {
@@ -91,9 +54,8 @@ class AIController : MonoBehaviour
 
         _movement.y = yVelocity;
         controller.Move(_movement);
-
-        ServerSend.UpdateEnemyPosition(gameObject);
     }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

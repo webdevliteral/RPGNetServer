@@ -14,12 +14,27 @@ public class ItemDrop : Interactable
         {
             Debug.Log($"Tryin to loot item: {item.name}");
 
-            bool pickedUp = GameServer.clients[_fromCID].player.inventory.Add(item);
+            bool pickedUp = NetworkManager.instance.Server.Clients[_fromCID].player.inventory.Add(item);
 
             if(pickedUp)
             {
                 ServerSend.ItemLooted(_fromCID, id, item.id);
-                Destroy(ItemManager.instance.localItems[id].gameObject);
+                for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
+                {
+                    if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == id)
+                    {
+                        Destroy(ItemManager.instance.localItems[i]);
+                        ItemManager.instance.localItems.Remove(ItemManager.instance.localItems[i]);
+                        //We don't want to spam use items if we have multiple,
+                        //so just return out of the method after first use
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log("That item doesn't exist in the players inventory...");
+                    }
+                }
+                    
                 return true;
             }            
             

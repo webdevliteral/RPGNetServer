@@ -11,6 +11,7 @@ public class Interactable : MonoBehaviour
     public bool isFocused;
     public bool hasInteracted = false;
     public float interactRadius = 3f;
+    public InteractionType interactionType;
 
     void FixedUpdate()
     {
@@ -19,21 +20,21 @@ public class Interactable : MonoBehaviour
 
     public virtual bool Interact(int _fromCID, Vector3 _comparePosition)
     {
+        Debug.Log($"{NetworkManager.instance.Server.Clients[_fromCID].player.username} is focusing {transform.name}");
 
-                Debug.Log($"{GameServer.clients[_fromCID].player.username} is focusing {transform.name}");
-                float distance = Vector3.Distance(_comparePosition, transform.position);
-                if (distance <= interactRadius && hasInteracted == false)
-                {
-                    Debug.Log($"{GameServer.clients[_fromCID].player.username} is in range of {transform.position}");
-                    return true;
-                    //Interact(GameServer.clients[i].player.id);
-                }
-                else
-                {
-                    ServerSend.InteractableTooFar(GameServer.clients[_fromCID].CID);
-                    Debug.Log($"Player {GameServer.clients[_fromCID].player.username} is trying to interact with: {transform.name} but is too far away!");
-                    return false;
-                }
+        float distance = (_comparePosition - transform.position).sqrMagnitude;
+
+        if (distance <= interactRadius * interactRadius && hasInteracted == false)
+        {
+            Debug.Log($"{NetworkManager.instance.Server.Clients[_fromCID].player.username} is in range of {transform.position}");
+            return true;
+        }
+        else
+        {
+            ServerSend.InteractableTooFar(NetworkManager.instance.Server.Clients[_fromCID].CID);
+            Debug.Log($"Player {NetworkManager.instance.Server.Clients[_fromCID].player.username} is trying to interact with: {transform.name} but is too far away!");
+            return false;
+        }
         
     }
 
@@ -44,3 +45,11 @@ public class Interactable : MonoBehaviour
     }
 }
 
+public enum InteractionType
+{
+    Item,
+    Enemy,
+    NPC,
+    Teleport,
+    Player
+}

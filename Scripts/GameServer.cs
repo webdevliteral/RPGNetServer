@@ -6,30 +6,28 @@ using UnityEngine;
 
 public class GameServer
 {
-    static string _consoleTitle = "RPGNet Logic/Game Server";
-    public static int Port { get; private set; }
-    public static int MaxPlayers { get; private set; }
+    private int _port;
+    private int _maxPlayers;
     //the tcplistener is functionally our server, which looks for incoming requests
     //and messages
-    private static TcpListener tcpListener;
-    private static UdpClient udpListener;
-    public static Dictionary<int, ClientRef> clients = new Dictionary<int, ClientRef>();
+    private TcpListener tcpListener;
+    private UdpClient udpListener;
+    private Dictionary<int, ClientRef> clients = new Dictionary<int, ClientRef>();
+    public Dictionary<int, ClientRef> Clients => clients;
 
-    public delegate void PacketHandler(int _fromClient, Packet _packet);
-    public static Dictionary<int, PacketHandler> packetHandlers;
-
-    public static void StartServer(int _maxPlayers, int _port)
+    private Dictionary<int, Action<int, Packet>> packetHandlers;
+    public Dictionary<int, Action<int, Packet>> PacketHandlers => packetHandlers;
+    public void StartServer(int maxPlayers, int port)
     {
         //set the server variables
-        Port = _port;
-        MaxPlayers = _maxPlayers;
-        Console.Title = _consoleTitle;
+        _port = port;
+        _maxPlayers = maxPlayers;
 
         //Handle all initial server data
         InitializeServerData();
 
         //create our tcpListener
-        tcpListener = new TcpListener(IPAddress.Any, Port);
+        tcpListener = new TcpListener(IPAddress.Any, this._port);
         //start and init the listener
         tcpListener.Start();
         //once listening, create a callback to handle messages
@@ -37,12 +35,12 @@ public class GameServer
         //to send data when callback is complete
         tcpListener.BeginAcceptTcpClient(new AsyncCallback(TcpConnectCallback), null);
 
-        udpListener = new UdpClient(Port);
+        udpListener = new UdpClient(this._port);
         udpListener.BeginReceive(UDPReceiveCallback, null);
-        Debug.Log($"Game Server successfully started!\n Running on port: {Port}");
+        Debug.Log($"Game Server successfully started!\n Running on port: {this._port}");
     }
 
-    private static void TcpConnectCallback(IAsyncResult _result)
+    private void TcpConnectCallback(IAsyncResult _result)
     {
         //after received a request, create a copy of the client and stop listening
         //for that machine/client
@@ -54,7 +52,7 @@ public class GameServer
         Debug.Log($" Incoming Game Server request from: {_client.Client.RemoteEndPoint}.");
 
         //LEFT OFF HERE
-        for (int i = 1; i <= MaxPlayers; i++)
+        for (int i = 1; i <= _maxPlayers; i++)
         {
             if (clients[i].tcp.socket == null)
             {
@@ -71,7 +69,7 @@ public class GameServer
         Debug.Log($"{_client.Client.RemoteEndPoint} failed to connect! Server is full!");
     }
 
-    private static void UDPReceiveCallback(IAsyncResult _result)
+    private void UDPReceiveCallback(IAsyncResult _result)
     {
         try
         {
@@ -108,7 +106,7 @@ public class GameServer
         }
     }
 
-    public static void SendUDPData(IPEndPoint _clientEndPoint, Packet _packet)
+    public void SendUDPData(IPEndPoint _clientEndPoint, Packet _packet)
     {
         try
         {
@@ -123,10 +121,10 @@ public class GameServer
         }
     }
 
-    private static void InitializeServerData()
+    private void InitializeServerData()
     {
         //PLAYER DATA
-        for (int i = 1; i < MaxPlayers; i++)
+        for (int i = 1; i < _maxPlayers; i++)
         {
             clients.Add(i, new ClientRef(i));
         }
@@ -137,7 +135,7 @@ public class GameServer
         //NPC DATA
         NPCManager.instance.InitNPCData();
         
-        packetHandlers = new Dictionary<int, PacketHandler>()
+        packetHandlers = new Dictionary<int, Action<int, Packet>>()
         {
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.userSessionConfirmed, ServerHandle.UserSessionReceived },
@@ -153,7 +151,7 @@ public class GameServer
         Debug.Log("Initialized packets.");
     }
 
-    public static void Stop()
+    public void Stop()
     {
         tcpListener.Stop();
         udpListener.Close();
