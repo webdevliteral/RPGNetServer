@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public int id;
+    public int id; // TODO: Change all of the interactables to use NetworkComponent so this field can go away
     public bool isFocused;
     public bool hasInteracted = false;
     public float interactRadius = 3f;

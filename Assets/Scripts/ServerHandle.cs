@@ -91,7 +91,7 @@ public class ServerHandle
     public static void RequestInteract(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();
-        int _eID = _packet.ReadInt();
+        uint networkId = _packet.ReadUint();
         int _type = _packet.ReadInt();
         Vector3 _playerPosition = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position;
         InteractionType interaction = (InteractionType)_type;
@@ -101,16 +101,16 @@ public class ServerHandle
         switch(interaction)
         {
             case InteractionType.Enemy:
-                if(EnemyManager.enemies.TryGetValue(_eID, out GameObject enemy))
+                if(EnemyManager.enemies.TryGetValue((int)networkId, out GameObject enemy)) // TODO: adjust enemies to use uint
                     enemy.GetComponent<Enemy>().Interact(_fromCID, _playerPosition); 
                 break;
             case InteractionType.Item:
-                ItemDrop itemDrop = ItemManager.instance.FindItemDrop((uint)_eID); // TODO: FIX CAST
+                ItemDrop itemDrop = ItemManager.instance.FindItemDrop(networkId);
                 if (itemDrop != null)
                     itemDrop.Interact(_fromCID, _playerPosition);
                 break;
             case InteractionType.NPC:
-                if (NPCManager.npcList.TryGetValue(_eID, out GameObject npc))
+                if (NPCManager.npcList.TryGetValue((int)networkId, out GameObject npc)) // TODO: adjust npcs to use uint
                     npc.GetComponent<NPC>().Interact(_fromCID, _playerPosition);
                 break;
         }
