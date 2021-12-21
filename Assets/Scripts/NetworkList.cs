@@ -5,16 +5,16 @@ using System.Collections.Generic;
 /// A list that can store <see cref="NetworkComponent"/> elements with O(1) access.
 /// Not currently thread-safe.
 /// </summary>
-public class NetworkList
+public class NetworkList<T> where T : NetworkComponent
 {
-    private List<NetworkComponent> _list;
+    private List<T> _list;
     private Dictionary<uint, int> _networkIdToIndex;
 
     public int Count => _list.Count;
 
     public NetworkList()
     {
-        _list = new List<NetworkComponent>();
+        _list = new List<T>();
         _networkIdToIndex = new Dictionary<uint, int>();
     }
 
@@ -22,7 +22,7 @@ public class NetworkList
     /// Adds a <see cref="NetworkComponent"/> element to the list.
     /// </summary>
     /// <exception cref="ArgumentNullException"></exception>
-    public void Add(NetworkComponent element)
+    public void Add(T element)
     {
         if (element == null)
         {
@@ -41,7 +41,7 @@ public class NetworkList
     /// </summary>
     /// <returns>True if the element was removed, false if the element isn't present in the list.</returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public bool Remove(NetworkComponent element)
+    public bool Remove(T element)
     {
         if (element == null)
         {
@@ -88,7 +88,7 @@ public class NetworkList
     /// This method has O(1) complexity.
     /// </summary>
     /// <returns>The element with the given network id, or null if an element with the given network id doesn't exist in the list.</returns>
-    public NetworkComponent GetByNetworkId(uint networkId)
+    public T GetByNetworkId(uint networkId)
     {
         if (_networkIdToIndex.TryGetValue(networkId, out int index))
         {

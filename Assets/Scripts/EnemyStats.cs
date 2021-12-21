@@ -18,17 +18,16 @@ public class EnemyStats : EntityStats
 
         for(int i = 0; i < lootDropPrefabs.Count; i++)
         {
-            GameObject itemDropGameObject = SpawnLoot(lootDropPrefabs[i]);
-
-            ServerSend.SendClientsLootData(lootDropPrefabs[i].GetComponent<ItemDrop>().item.id, itemDropGameObject.GetComponent<NetworkComponent>().NetworkId, transform.position);
+            var itemDrop = SpawnLoot(lootDropPrefabs[i]);
+            ServerSend.SendClientsLootData(itemDrop.item.id, itemDrop.NetworkId, transform.position);
         }
 
     }
 
-    private GameObject SpawnLoot(GameObject _item)
+    private ItemDrop SpawnLoot(GameObject itemDropPrefab)
     {
-        GameObject itemDropGameObject = Instantiate(_item, transform.position, Quaternion.identity);
-        ItemManager.instance.AddItemDrop(itemDropGameObject.GetComponent<NetworkComponent>());
-        return itemDropGameObject;
+        var itemDrop = Instantiate(itemDropPrefab, transform.position, Quaternion.identity).GetComponent<ItemDrop>();
+        ItemManager.instance.AddItemDrop(itemDrop);
+        return itemDrop;
     }
 }

@@ -4,16 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class ItemDrop : Interactable
+public class ItemDrop : NetworkComponent
 {
     public Item item;
-
-    private NetworkComponent _networkComponent;
-
-    private void Start()
-    {
-        _networkComponent = GetComponent<NetworkComponent>();
-    }
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
@@ -25,10 +18,10 @@ public class ItemDrop : Interactable
 
             if(pickedUp)
             {
-                if (ItemManager.instance.RemoveItemDrop(_networkComponent))
+                if (ItemManager.instance.RemoveItemDrop(this))
                 {
                     Destroy(gameObject);
-                    ServerSend.ItemLooted(_fromCID, _networkComponent.NetworkId, item.id);
+                    ServerSend.ItemLooted(_fromCID, NetworkId, item.id);
                 }
 
                 return true;

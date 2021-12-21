@@ -8,7 +8,7 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager instance;
 
-    private NetworkList itemDrops = new NetworkList();
+    private NetworkList<ItemDrop> itemDrops = new NetworkList<ItemDrop>();
 
     private void Awake()
     {
@@ -18,12 +18,12 @@ public class ItemManager : MonoBehaviour
             Destroy(this);
     }
 
-    public void AddItemDrop(NetworkComponent itemDrop)
+    public void AddItemDrop(ItemDrop itemDrop)
     {
         itemDrops.Add(itemDrop);
     }
 
-    public bool RemoveItemDrop(NetworkComponent itemDrop)
+    public bool RemoveItemDrop(ItemDrop itemDrop)
     {
         return itemDrops.Remove(itemDrop);
     }

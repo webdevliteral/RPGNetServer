@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class NetworkComponent : MonoBehaviour
+public abstract class NetworkComponent : Interactable // TODO: make Interactable an interface that subclasses of NetworkComponent can implement
 {
     private static uint networkIdGenerator = 1;
 
@@ -9,11 +9,11 @@ public class NetworkComponent : MonoBehaviour
     /// An identifier that is unique per object, and synced across the server and all game clients.
     /// A network id can never be 0.
     /// </summary>
-    public uint NetworkId => networkId;
-    private uint networkId;
+    public uint NetworkId => _networkId;
+    private uint _networkId;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        networkId = networkIdGenerator++;
+        _networkId = networkIdGenerator++;
     }
 }

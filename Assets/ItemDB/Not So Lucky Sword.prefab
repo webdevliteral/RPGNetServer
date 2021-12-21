@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 284073984168042102}
   - component: {fileID: 284073984168042103}
-  - component: {fileID: 55310661528906992}
   m_Layer: 0
   m_Name: Not So Lucky Sword
   m_TagString: Untagged
@@ -51,18 +50,6 @@ MonoBehaviour:
   interactRadius: 3
   interactionType: 0
   item: {fileID: 11400000, guid: bfbc6cc0bec257140b27867c269c291d, type: 2}
---- !u!114 &55310661528906992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 284073984168042100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f03934194946846b663ad3bf485c11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &284073985645531311
 GameObject:
   m_ObjectHideFlags: 0
