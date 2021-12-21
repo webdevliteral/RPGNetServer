@@ -5,18 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+public abstract class Interactable : MonoBehaviour
 {
-    public int id;
+    public int id; // TODO: Change all of the interactables to use NetworkComponent so this field can go away
     public bool isFocused;
     public bool hasInteracted = false;
     public float interactRadius = 3f;
     public InteractionType interactionType;
-
-    void FixedUpdate()
-    {
-        
-    }
 
     public virtual bool Interact(int _fromCID, Vector3 _comparePosition)
     {

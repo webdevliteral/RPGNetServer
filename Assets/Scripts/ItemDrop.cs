@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class ItemDrop : Interactable
+public class ItemDrop : NetworkComponent
 {
     public Item item;
 
@@ -18,26 +18,14 @@ public class ItemDrop : Interactable
 
             if(pickedUp)
             {
-                ServerSend.ItemLooted(_fromCID, id, item.id);
-                for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
+                if (ItemManager.instance.RemoveItemDrop(this))
                 {
-                    if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == id)
-                    {
-                        Destroy(ItemManager.instance.localItems[i]);
-                        ItemManager.instance.localItems.Remove(ItemManager.instance.localItems[i]);
-                        //We don't want to spam use items if we have multiple,
-                        //so just return out of the method after first use
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.Log("That item doesn't exist in the players inventory...");
-                    }
+                    Destroy(gameObject);
+                    ServerSend.ItemLooted(_fromCID, NetworkId, item.id);
                 }
-                    
+
                 return true;
             }            
-            
         }
             
         return false;

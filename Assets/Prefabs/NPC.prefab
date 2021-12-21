@@ -143,6 +143,7 @@ MonoBehaviour:
   isFocused: 0
   hasInteracted: 0
   interactRadius: 3
+  interactionType: 0
   entityName: 
   gravity: -9.18
   moveSpeed: 5

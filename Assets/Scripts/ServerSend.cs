@@ -264,24 +264,24 @@ public class ServerSend
         }
     }
 
-    public static void SendClientsLootData(int _itemID, int _eID, Vector3 _lootSpawnPos)
+    public static void SendClientsLootData(int _itemID, uint _networkId, Vector3 _lootSpawnPos)
     {
         using (Packet _packet = new Packet((int)ServerPackets.sendClientsLootData))
         {
             _packet.Write(_itemID);
-            _packet.Write(_eID);
+            _packet.Write(_networkId);
             _packet.Write(_lootSpawnPos);
 
             SendTCPDataToAll(_packet);
         }
     }
 
-    public static void ItemLooted(int _fromCID, int _eID, int _itemID)
+    public static void ItemLooted(int _fromCID, uint _networkId, int _itemID)
     {
         using (Packet _packet = new Packet((int)ServerPackets.itemLooted))
         {
             _packet.Write(_fromCID);
-            _packet.Write(_eID);
+            _packet.Write(_networkId);
             _packet.Write(_itemID);
 
             SendTCPDataToAll(_packet);

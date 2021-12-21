@@ -48,6 +48,7 @@ MonoBehaviour:
   isFocused: 0
   hasInteracted: 0
   interactRadius: 3
+  interactionType: 0
   item: {fileID: 11400000, guid: bfbc6cc0bec257140b27867c269c291d, type: 2}
 --- !u!1 &284073985645531311
 GameObject:
