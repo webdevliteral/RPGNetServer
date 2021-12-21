@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-[RequireComponent(typeof(NetworkComponent))]
 public class ItemDrop : Interactable
 {
     public Item item;
@@ -29,9 +28,7 @@ public class ItemDrop : Interactable
                 if (ItemManager.instance.RemoveItemDrop(_networkComponent))
                 {
                     Destroy(gameObject);
-
-                    // TODO: REMOVE CAST
-                    ServerSend.ItemLooted(_fromCID, (int)_networkComponent.NetworkId, item.id);
+                    ServerSend.ItemLooted(_fromCID, _networkComponent.NetworkId, item.id);
                 }
 
                 return true;

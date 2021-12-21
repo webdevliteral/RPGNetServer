@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkComponent))]
 public class Interactable : MonoBehaviour
 {
     public int id; // TODO: Change all of the interactables to use NetworkComponent so this field can go away

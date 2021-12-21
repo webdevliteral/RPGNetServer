@@ -20,8 +20,7 @@ public class EnemyStats : EntityStats
         {
             GameObject itemDropGameObject = SpawnLoot(lootDropPrefabs[i]);
 
-            // TODO: FIX CAST
-            ServerSend.SendClientsLootData(lootDropPrefabs[i].GetComponent<ItemDrop>().item.id, (int)itemDropGameObject.GetComponent<NetworkComponent>().NetworkId, transform.position);
+            ServerSend.SendClientsLootData(lootDropPrefabs[i].GetComponent<ItemDrop>().item.id, itemDropGameObject.GetComponent<NetworkComponent>().NetworkId, transform.position);
         }
 
     }

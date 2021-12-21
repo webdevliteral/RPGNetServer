@@ -58,17 +58,15 @@ public class NetworkManager : MonoBehaviour
 
     public static bool AttemptNewSession(string _username, string _password)
     {
-        setPName = "Daldrok";
-        return true;
-        //string accountJSON = ConnectAndAuth(_username, _password);
-        //string _sessionPlayerName = AccountData.HandleUserJSON(accountJSON);
-        //if (_sessionPlayerName != null)
-        //{
-        //    setPName = _sessionPlayerName;
-        //    return true;
-        //}
-        //else
-        //    return false;
+        string accountJSON = ConnectAndAuth(_username, _password);
+        string _sessionPlayerName = AccountData.HandleUserJSON(accountJSON);
+        if (_sessionPlayerName != null)
+        {
+            setPName = _sessionPlayerName;
+            return true;
+        }
+        else
+            return false;
 
     }
 
