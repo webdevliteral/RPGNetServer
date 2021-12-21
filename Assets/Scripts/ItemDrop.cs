@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkComponent))]
 public class ItemDrop : Interactable
 {
     public Item item;
+
+    private NetworkComponent _networkComponent;
+
+    private void Start()
+    {
+        _networkComponent = GetComponent<NetworkComponent>();
+    }
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
@@ -18,26 +26,16 @@ public class ItemDrop : Interactable
 
             if(pickedUp)
             {
-                ServerSend.ItemLooted(_fromCID, id, item.id);
-                for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
+                if (ItemManager.instance.RemoveItemDrop(_networkComponent))
                 {
-                    if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == id)
-                    {
-                        Destroy(ItemManager.instance.localItems[i]);
-                        ItemManager.instance.localItems.Remove(ItemManager.instance.localItems[i]);
-                        //We don't want to spam use items if we have multiple,
-                        //so just return out of the method after first use
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.Log("That item doesn't exist in the players inventory...");
-                    }
+                    Destroy(gameObject);
+
+                    // TODO: REMOVE CAST
+                    ServerSend.ItemLooted(_fromCID, (int)_networkComponent.NetworkId, item.id);
                 }
-                    
+
                 return true;
             }            
-            
         }
             
         return false;

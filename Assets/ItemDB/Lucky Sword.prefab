@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 284073984168042102}
   - component: {fileID: 284073984168042103}
+  - component: {fileID: 895806600338618541}
   m_Layer: 0
   m_Name: Lucky Sword
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284073984168042100}
   m_LocalRotation: {x: 0, y: 0.195561, z: 0, w: 0.98069155}
-  m_LocalPosition: {x: -6.7735057, y: 1.0799999, z: 25.262539}
+  m_LocalPosition: {x: 1.761931, y: 1.0799998, z: 15.429948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 284073985645531310}
@@ -50,6 +51,18 @@ MonoBehaviour:
   interactRadius: 3
   interactionType: 0
   item: {fileID: 11400000, guid: 1135a3cf0301b1c46823d38926e75cfc, type: 2}
+--- !u!114 &895806600338618541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284073984168042100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f03934194946846b663ad3bf485c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &284073985645531311
 GameObject:
   m_ObjectHideFlags: 0

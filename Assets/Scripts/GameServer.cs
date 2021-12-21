@@ -144,7 +144,6 @@ public class GameServer
                 { (int)ClientPackets.clearFocus, ServerHandle.ClearFocus },
                 { (int)ClientPackets.killEnemy, ServerHandle.KillEnemy},
                 { (int)ClientPackets.requestInteract, ServerHandle.RequestInteract},
-                { (int)ClientPackets.requestLoot, ServerHandle.OnLootRequested},
                 { (int)ClientPackets.requestUseItem, ServerHandle.OnUseItemRequested},
                 { (int)ClientPackets.requestEquipItem, ServerHandle.OnEquipItemRequested}
         };

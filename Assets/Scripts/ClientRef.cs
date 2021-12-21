@@ -144,7 +144,14 @@ public class ClientRef
                     using (Packet _packet = new Packet(_packetBytes))
                     {
                         int _packetId = _packet.ReadInt();
-                        NetworkManager.instance.Server.PacketHandlers[_packetId](cid, _packet);
+                        if (NetworkManager.instance.Server.PacketHandlers.TryGetValue(_packetId, out var packetHandler))
+                        {
+                            packetHandler(cid, _packet);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"unknown packet id {_packetId}");
+                        }
                     }
                 });
             }

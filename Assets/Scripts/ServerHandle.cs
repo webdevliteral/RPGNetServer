@@ -105,63 +105,15 @@ public class ServerHandle
                     enemy.GetComponent<Enemy>().Interact(_fromCID, _playerPosition); 
                 break;
             case InteractionType.Item:
-                GameObject item = FindItemInLocalItems(_fromCID, _eID);
-                if (item != null)
-                    item.GetComponent<ItemDrop>().Interact(_fromCID, _playerPosition);
+                ItemDrop itemDrop = ItemManager.instance.FindItemDrop((uint)_eID); // TODO: FIX CAST
+                if (itemDrop != null)
+                    itemDrop.Interact(_fromCID, _playerPosition);
                 break;
             case InteractionType.NPC:
                 if (NPCManager.npcList.TryGetValue(_eID, out GameObject npc))
                     npc.GetComponent<NPC>().Interact(_fromCID, _playerPosition);
                 break;
         }
-    }
-
-    private static GameObject FindItemInLocalItems(int _fromCID, int _eID)
-    {
-        for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
-        {
-            if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == _eID)
-            {
-                return ItemManager.instance.localItems[i];
-                //We don't want to spam use items if we have multiple,
-                //so just return out of the method after first use
-            }
-            else
-            {
-                Debug.Log("That item doesn't exist in the players inventory...");
-            }
-
-        }
-        return null;
-    }
-
-    public static void OnLootRequested(int _fromClient, Packet _packet)
-    {
-        int _fromCID = _packet.ReadInt();
-        int _itemID = _packet.ReadInt();
-        Vector3 _playerPosition = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position;
-
-        Debug.Log($"Client {_fromCID} is trying to loot item with ID: {_itemID}.");
-        //TODO: create a list of global items somewhere so i can
-        //add a global reference to the players instance of inventory
-        for (int i = 0; i < ItemManager.instance.localItems.Count; i++)
-        {
-            if (ItemManager.instance.localItems[i].GetComponent<ItemDrop>().id == _itemID)
-            {
-                ItemManager.instance.localItems[i].GetComponent<ItemDrop>().Interact(_fromCID, _playerPosition);
-                //We don't want to spam use items if we have multiple,
-                //so just return out of the method after first use
-                return;
-            }
-            else
-            {
-                Debug.Log("That item doesn't exist in the players inventory...");
-            }
-
-        }
-        
-        
-        //NetworkManager.instance.Access.Clients[_fromCID].player.inventory.Add(GlobalItemDB.instance.globalItems[_itemID]);
     }
 
     public static void OnUseItemRequested(int _fromClient, Packet _packet)

@@ -45,7 +45,6 @@ public enum ClientPackets
     interactableTooFar,
     requestFocus,
     interactionConfirmed,
-    requestLoot,
     requestUseItem,
     requestEquipItem
 }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
 public class EnemyStats : EntityStats
 {
-    public List<GameObject> lootDrops = new List<GameObject>();
+    [SerializeField]
+    private List<GameObject> lootDropPrefabs = new List<GameObject>();
     public override void HandleDeath()
     {
         base.HandleDeath();
@@ -19,22 +16,20 @@ public class EnemyStats : EntityStats
 
         Destroy(gameObject);
 
-        for(int i = 0; i < lootDrops.Count; i++)
+        for(int i = 0; i < lootDropPrefabs.Count; i++)
         {
-            int _setID = ItemManager.instance.localItems.Count;
-            
-            lootDrops[i].transform.position = transform.position;
-            SpawnLoot(lootDrops[i], _setID);
-            ServerSend.SendClientsLootData(lootDrops[i].GetComponent<ItemDrop>().item.id, _setID, transform.position);
+            GameObject itemDropGameObject = SpawnLoot(lootDropPrefabs[i]);
+
+            // TODO: FIX CAST
+            ServerSend.SendClientsLootData(lootDropPrefabs[i].GetComponent<ItemDrop>().item.id, (int)itemDropGameObject.GetComponent<NetworkComponent>().NetworkId, transform.position);
         }
 
     }
 
-    public void SpawnLoot(GameObject _item, int _setID)
+    private GameObject SpawnLoot(GameObject _item)
     {
-        GameObject copy = Instantiate(_item, transform.position, Quaternion.identity);
-        copy.GetComponent<ItemDrop>().id = _setID;
-        ItemManager.instance.localItems.Add(copy);
-        
+        GameObject itemDropGameObject = Instantiate(_item, transform.position, Quaternion.identity);
+        ItemManager.instance.AddItemDrop(itemDropGameObject.GetComponent<NetworkComponent>());
+        return itemDropGameObject;
     }
 }

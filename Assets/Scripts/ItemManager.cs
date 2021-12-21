@@ -7,6 +7,9 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager instance;
+
+    private NetworkList itemDrops = new NetworkList();
+
     private void Awake()
     {
         if (instance == null)
@@ -15,6 +18,24 @@ public class ItemManager : MonoBehaviour
             Destroy(this);
     }
 
-    public List<GameObject> localItems = new List<GameObject>();
-   
+    public void AddItemDrop(NetworkComponent itemDrop)
+    {
+        itemDrops.Add(itemDrop);
+    }
+
+    public bool RemoveItemDrop(NetworkComponent itemDrop)
+    {
+        return itemDrops.Remove(itemDrop);
+    }
+
+    public ItemDrop FindItemDrop(uint networkId)
+    {
+        var itemDrop = itemDrops.GetByNetworkId(networkId);
+        if (itemDrop != null)
+        {
+            return itemDrop.GetComponent<ItemDrop>();
+        }
+
+        return null;
+    }
 }

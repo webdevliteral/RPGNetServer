@@ -13,11 +13,6 @@ public class Interactable : MonoBehaviour
     public float interactRadius = 3f;
     public InteractionType interactionType;
 
-    void FixedUpdate()
-    {
-        
-    }
-
     public virtual bool Interact(int _fromCID, Vector3 _comparePosition)
     {
         Debug.Log($"{NetworkManager.instance.Server.Clients[_fromCID].player.username} is focusing {transform.name}");
