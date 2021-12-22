@@ -8,6 +8,10 @@ using UnityEngine;
 public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager instance;
+
+    private Dictionary<uint, NetworkComponent> networkComponents = new Dictionary<uint, NetworkComponent>();
+
+    public List<GameObject> prefabs = new List<GameObject>(); 
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
     public GameObject npcPrefab;
@@ -39,6 +43,27 @@ public class NetworkManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         server.Stop();
+    }
+
+    public void AddNetworkComponent(NetworkComponent component)
+    {
+        networkComponents.Add(component.NetworkId, component);
+    }
+
+    public bool RemoveNetworkComponent(NetworkComponent component)
+    {
+        return networkComponents.Remove(component.NetworkId);
+    }
+
+    public NetworkComponent FindNetworkComponent(uint networkId)
+    {
+        var component = networkComponents[networkId];
+        if (component != null)
+        {
+            return component;
+        }
+
+        return null;
     }
 
     public Player InstantiatePlayer()
@@ -76,6 +101,7 @@ public class NetworkManager : MonoBehaviour
         return HTTP.GET(url);
     }
 
+
     struct AccountData
     {
         public string email;
@@ -89,7 +115,6 @@ public class NetworkManager : MonoBehaviour
         }
     }
     
-
     class HTTP
     {
         //HTTP&WEB

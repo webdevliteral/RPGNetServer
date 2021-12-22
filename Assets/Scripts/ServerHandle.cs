@@ -23,8 +23,7 @@ public class ServerHandle
 
                 //ENEMIES
                 //load the enemies
-                EnemyManager.instance.LoadEnemiesOnClient(_fromClient);
-                NPCManager.instance.LoadNPCListOnClient(_fromClient);
+
 
 
 
@@ -92,27 +91,16 @@ public class ServerHandle
     {
         int _fromCID = _packet.ReadInt();
         uint networkId = _packet.ReadUint();
-        int _type = _packet.ReadInt();
-        Vector3 _playerPosition = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position;
-        InteractionType interaction = (InteractionType)_type;
 
-
-        Debug.Log($"Interaction type {interaction}");
-        switch(interaction)
+        var component = NetworkManager.instance.FindNetworkComponent(networkId);
+        if (component != null)
         {
-            case InteractionType.Enemy:
-                if(EnemyManager.enemies.TryGetValue((int)networkId, out GameObject enemy)) // TODO: adjust enemies to use uint
-                    enemy.GetComponent<Enemy>().Interact(_fromCID, _playerPosition); 
-                break;
-            case InteractionType.Item:
-                ItemDrop itemDrop = ItemManager.instance.FindItemDrop(networkId);
-                if (itemDrop != null)
-                    itemDrop.Interact(_fromCID, _playerPosition);
-                break;
-            case InteractionType.NPC:
-                if (NPCManager.npcList.TryGetValue((int)networkId, out GameObject npc)) // TODO: adjust npcs to use uint
-                    npc.GetComponent<NPC>().Interact(_fromCID, _playerPosition);
-                break;
+            if(NetworkManager.instance.Server.Clients[_fromCID].player != null)
+            {
+                Vector3 distance = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position - component.transform.position;
+                component.GetComponent<IInteractable>().Interact(_fromCID, distance);
+            }
+            
         }
     }
 
@@ -138,7 +126,6 @@ public class ServerHandle
             }
             
         }
-        //NetworkManager.instance.Access.Clients[_fromCID].player.GetComponent<Inventory>().items[].id;
     }
 
     public static void OnEquipItemRequested(int _fromClient, Packet _packet)
@@ -163,7 +150,6 @@ public class ServerHandle
             }
 
         }
-        //NetworkManager.instance.Access.Clients[_fromCID].player.GetComponent<Inventory>().items[].id;
     }
 
     public static void KillEnemy(int _fromClient, Packet _packet)
@@ -171,4 +157,13 @@ public class ServerHandle
         int _fromCID = _packet.ReadInt();
         int _eID = _packet.ReadInt();
     }
+}
+
+public enum InteractionType
+{
+    Item,
+    Enemy,
+    NPC,
+    Teleport,
+    Player
 }

@@ -5,14 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkComponent))]
 class EnemyController : AIController
 {
     [SerializeField]
     Combat enemyCombat;
 
+    private NetworkComponent networkComponent;
+
     private void Awake()
     {
         enemyCombat = GetComponent<Combat>();
+        networkComponent = GetComponent<NetworkComponent>();
     }
     void FixedUpdate()
     {
@@ -25,8 +29,8 @@ class EnemyController : AIController
             PlayerStats _playerStats = target.GetComponent<PlayerStats>();
             if (_distance.sqrMagnitude >= _stopDistance * _stopDistance)
             {
-                Move(_distance.normalized, moveSpeed);
-                ServerSend.UpdateEnemyPosition(gameObject.GetComponent<Enemy>().id, transform.position);
+                Move(_distance.normalized, _moveSpeed);
+                ServerSend.UpdateEnemyPosition(networkComponent.NetworkId, transform.position);
             }
             else
             {
@@ -41,7 +45,7 @@ class EnemyController : AIController
     private bool TargetInLineOfSight(Transform _target)
     {
 
-        if (Physics.Raycast(transform.position, _target.transform.position, out RaycastHit _hit, lookRadius))
+        if (Physics.Raycast(transform.position, _target.transform.position, out RaycastHit _hit, _lookRadius))
         {
             if (_hit.collider != null)
             {

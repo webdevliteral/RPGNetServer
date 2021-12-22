@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class NetworkComponent : Interactable // TODO: make Interactable an interface that subclasses of NetworkComponent can implement
+public class NetworkComponent : MonoBehaviour
 {
     private static uint networkIdGenerator = 1;
 

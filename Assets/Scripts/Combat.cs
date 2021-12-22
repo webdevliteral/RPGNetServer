@@ -5,20 +5,22 @@ using UnityEngine;
 [RequireComponent(typeof(EntityStats))]
 class Combat : MonoBehaviour
 {
-    public float attackSpeed = 1.0f;
+    private float attackSpeed = 1.0f;
     private float attackCooldown = 0f;
-    public float castSpeed;
-    EntityStats myStats;
+    private float castSpeed;
 
-    void Start()
+    private EntityStats myStats;
+
+    private void Start()
     {
         myStats = GetComponent<EntityStats>();
     }
 
-    void Update()
+    private void Update()
     {
         attackCooldown -= Time.deltaTime;
     }
+
     public void Attack(EntityStats targetStats)
     {
         if(attackCooldown <= 0f)

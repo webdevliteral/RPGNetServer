@@ -106,9 +106,26 @@ public class ServerSend
             _packet.Write(_player.username);
             _packet.Write(_player.transform.position);
             _packet.Write(_player.transform.rotation);
+            _packet.Write(_player.NetworkId);
 
             SendTcpData(_toCID, _packet);
         }
+    }
+
+    //------------------------ ENTITY DATA
+
+    public static void EntityInfo(uint networkId, uint prefabId, Vector3 position, Quaternion rotation)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.EntityInfo))
+        {
+            _packet.Write(networkId);
+            _packet.Write(prefabId);
+            _packet.Write(position);
+            _packet.Write(rotation);
+
+            SendTCPDataToAll(_packet);
+        }
+            
     }
 
     //------------------------ NPC DATA
@@ -117,8 +134,7 @@ public class ServerSend
     {
         using (Packet _packet = new Packet((int)ServerPackets.spawnNPC))
         {
-            _packet.Write(_npc.GetComponent<NPC>().id);
-            _packet.Write(_npc.GetComponent<NPC>().entityName);
+            _packet.Write(_npc.GetComponent<NPC>().EntityName);
             _packet.Write(_npc.GetComponent<EntityStats>().maxHealth);
             _packet.Write(_npc.GetComponent<EntityStats>().currentHealth);
             _packet.Write(_npc.transform.position);
@@ -133,8 +149,7 @@ public class ServerSend
     {
         using (Packet _packet = new Packet((int)ServerPackets.spawnEnemy))
         {
-            _packet.Write(_enemy.GetComponent<Enemy>().id);
-            _packet.Write(_enemy.GetComponent<Enemy>().entityName);
+            _packet.Write(_enemy.GetComponent<Enemy>().EntityName);
             _packet.Write(_enemy.GetComponent<EnemyStats>().maxHealth);
             _packet.Write(_enemy.GetComponent<EnemyStats>().currentHealth);
             _packet.Write(_enemy.transform.position);
@@ -148,8 +163,7 @@ public class ServerSend
     {
         using (Packet _packet = new Packet((int)ServerPackets.loadEnemiesOnClient))
         {
-            _packet.Write(_enemy.GetComponent<Enemy>().id);
-            _packet.Write(_enemy.GetComponent<Enemy>().entityName);
+            _packet.Write(_enemy.GetComponent<Enemy>().EntityName);
             _packet.Write(_enemy.GetComponent<EnemyStats>().maxHealth);
             _packet.Write(_enemy.GetComponent<EnemyStats>().currentHealth);
             _packet.Write(_enemy.transform.position);
@@ -163,8 +177,7 @@ public class ServerSend
     {
         using (Packet _packet = new Packet((int)ServerPackets.loadNPCsOnClient))
         {
-            _packet.Write(_npc.GetComponent<NPC>().id);
-            _packet.Write(_npc.GetComponent<NPC>().entityName);
+            _packet.Write(_npc.GetComponent<NPC>().EntityName);
             _packet.Write(_npc.GetComponent<EntityStats>().maxHealth);
             _packet.Write(_npc.GetComponent<EntityStats>().currentHealth);
             _packet.Write(_npc.transform.position);
@@ -174,34 +187,33 @@ public class ServerSend
         }
     }
 
-    public static void UpdateEnemyStats(GameObject _enemy)
+    public static void UpdateEntityStats(uint networkId, int healthValue)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.updateEnemyStats))
+        using (Packet _packet = new Packet((int)ServerPackets.updateEntityStats))
         {
-            _packet.Write(_enemy.GetComponent<Enemy>().id);
-            _packet.Write(_enemy.GetComponent<EntityStats>().currentHealth);
+            _packet.Write(networkId);
+            _packet.Write(healthValue);
 
             SendTCPDataToAll(_packet);
         }
     }
 
-    public static void UpdateEnemyPosition(int _id, Vector3 _position)
+    public static void UpdateEnemyPosition(uint networkId, Vector3 _position)
     {
         using (Packet _packet = new Packet((int)ServerPackets.updateEnemyPosition))
         {
-            _packet.Write(_id);
+            _packet.Write(networkId);
             _packet.Write(_position);
 
             SendUDPDataToAll(_packet);
         }
     }
 
-    public static void KillEnemy(GameObject _enemy)
+    public static void KillEnemy(uint networkId)
     {
         using (Packet _packet = new Packet((int)ServerPackets.killEnemy))
         {
-            Debug.Log("KILL ENEMY: " + _enemy.GetComponent<Enemy>().id);
-            _packet.Write(_enemy.GetComponent<Enemy>().id);
+            _packet.Write(networkId);
 
             SendTCPDataToAll(_packet);
         }
@@ -252,22 +264,22 @@ public class ServerSend
         }
     }
 
-    public static void InteractionConfirmed(int _toCID, int _eID, string _msg)
+    public static void InteractionConfirmed(int _toCID, string _msg)
     {
         using (Packet _packet = new Packet((int)ServerPackets.interactionConfirmed))
         {
             _packet.Write(_toCID);
-            _packet.Write(_eID);
             _packet.Write(_msg);
 
             SendTcpData(_toCID, _packet);
         }
     }
 
-    public static void SendClientsLootData(int _itemID, uint _networkId, Vector3 _lootSpawnPos)
+    public static void SendClientsLootData(int _prefabId, int _itemID, uint _networkId, Vector3 _lootSpawnPos)
     {
         using (Packet _packet = new Packet((int)ServerPackets.sendClientsLootData))
         {
+            _packet.Write(_prefabId);
             _packet.Write(_itemID);
             _packet.Write(_networkId);
             _packet.Write(_lootSpawnPos);

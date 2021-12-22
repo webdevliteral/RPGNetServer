@@ -128,12 +128,6 @@ public class GameServer
         {
             clients.Add(i, new ClientRef(i));
         }
-
-        //ENEMY DATA
-        EnemyManager.instance.InitEnemyData();
-
-        //NPC DATA
-        NPCManager.instance.InitNPCData();
         
         packetHandlers = new Dictionary<int, Action<int, Packet>>()
         {

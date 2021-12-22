@@ -7,44 +7,36 @@ using UnityEngine;
 
 public class Enemy : NPC
 {
-    EnemyStats myStats;
+    private EnemyStats myStats;
 
-    void Start()
+    protected override void Start()
     {
         myStats = GetComponent<EnemyStats>();
+        base.Start();
     }
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
-        if (NetworkManager.instance.Server.Clients[_fromCID].player != null)
-        {
-            
-            //Debug.Log($"Client {_fromCID} is trying to interact with an enemy from position {_comparePosition}");
-            if (base.Interact(_fromCID, _comparePosition))
-            {
-                string _msg = $"You are now interacting with: {entityName}";
+        Combat playerCombat = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Combat>();
 
-                Combat playerCombat = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Combat>();
-
-                if(playerCombat != null)
-                {
-                    playerCombat.Attack(myStats);
-                    ServerSend.UpdateEnemyStats(gameObject);
-                }
-                    
-                
-                ServerSend.InteractionConfirmed(_fromCID, GetComponent<Enemy>().id, _msg);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
+        if (playerCombat != null)
         {
-            return false;
+            playerCombat.Attack(myStats);
+
+            string _msg = $"Youre fighting {EntityName}";
+            ServerSend.InteractionConfirmed(_fromCID, _msg);
+
+            return true;
         }
-            
+
+        return false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactRadius);
     }
 }
+
+
 
