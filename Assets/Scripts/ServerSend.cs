@@ -114,7 +114,7 @@ public class ServerSend
 
     //------------------------ ENTITY DATA
 
-    public static void EntityInfo(uint networkId, uint prefabId, Vector3 position, Quaternion rotation)
+    public static void SpawnEntity(uint networkId, uint prefabId, Vector3 position, Quaternion rotation)
     {
         using (Packet _packet = new Packet((int)ServerPackets.EntityInfo))
         {

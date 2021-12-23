@@ -5,18 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[RequireComponent(typeof(NetworkComponent))]
+
 class EnemyController : AIController
 {
     [SerializeField]
-    Combat enemyCombat;
+    private Combat enemyCombat;
 
-    private NetworkComponent networkComponent;
+    protected float _stopDistance = 2.0f;
+    protected float _moveSpeed = 3.5f;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         enemyCombat = GetComponent<Combat>();
-        networkComponent = GetComponent<NetworkComponent>();
+        
     }
     void FixedUpdate()
     {
@@ -30,7 +32,6 @@ class EnemyController : AIController
             if (_distance.sqrMagnitude >= _stopDistance * _stopDistance)
             {
                 Move(_distance.normalized, _moveSpeed);
-                ServerSend.UpdateEnemyPosition(networkComponent.NetworkId, transform.position);
             }
             else
             {

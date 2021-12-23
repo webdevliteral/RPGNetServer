@@ -9,33 +9,33 @@ public class Enemy : NPC
 {
     private EnemyStats myStats;
 
-    protected override void Start()
+    public override void Start()
     {
-        myStats = GetComponent<EnemyStats>();
         base.Start();
+        myStats = GetComponent<EnemyStats>();
     }
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
-        Combat playerCombat = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Combat>();
-
-        if (playerCombat != null)
+        if(base.Interact(_fromCID, _comparePosition))
         {
-            playerCombat.Attack(myStats);
+            Combat playerCombat = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Combat>();
 
-            string _msg = $"Youre fighting {EntityName}";
-            ServerSend.InteractionConfirmed(_fromCID, _msg);
+            if (playerCombat != null)
+            {
+                playerCombat.Attack(myStats);
 
-            return true;
+                string _msg = $"Youre fighting {EntityName}";
+                ServerSend.InteractionConfirmed(_fromCID, _msg);
+
+                return true;
+            }
+
+            return false;
         }
 
         return false;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactRadius);
-    }
 }
 
 

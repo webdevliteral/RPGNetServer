@@ -47,7 +47,6 @@ public class EntityStats : MonoBehaviour
 
     public virtual void HandleDeath()
     {
-        //TODO: handle death
         Destroy(gameObject);
     }
 }

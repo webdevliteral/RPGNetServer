@@ -15,8 +15,7 @@ public class RegularEquipment : Item
         Debug.Log(NetworkManager.instance.Server.Clients[_fromCID].player);
         if (NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager != null)
         {
-            NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager.Equip(this);
-            ServerSend.ItemEquipped(_fromCID, id);
+            NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager.Equip(this, _fromCID, id);
         }
         
         

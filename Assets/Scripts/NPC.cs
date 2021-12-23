@@ -8,26 +8,9 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkComponent))]
 public class NPC : Entity
 {
-    private Focus focus;
-
-    
-    public float gravity = -9.18f;
-    public float moveSpeed = 5f;    
-
-    protected virtual void Start()
+    public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
-        focus = GetComponent<Focus>();
-        _networkComponent = GetComponent<NetworkComponent>();
-        gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
-        moveSpeed *= Time.fixedDeltaTime;
-
-        NetworkManager.instance.AddNetworkComponent(_networkComponent);
-        ServerSend.EntityInfo(_networkComponent.NetworkId, _entityPrefabId, transform.position, transform.rotation);
-    }
-
-    public void SpawnInGame()
-    {
-        ServerSend.SpawnNPC(gameObject);
+        return base.Interact(_fromCID, _comparePosition);
     }
 }
 

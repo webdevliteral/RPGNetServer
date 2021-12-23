@@ -158,12 +158,3 @@ public class ServerHandle
         int _eID = _packet.ReadInt();
     }
 }
-
-public enum InteractionType
-{
-    Item,
-    Enemy,
-    NPC,
-    Teleport,
-    Player
-}

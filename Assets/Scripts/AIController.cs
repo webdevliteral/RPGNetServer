@@ -1,28 +1,32 @@
 ﻿using UnityEngine;
-//using UnityEngine.AI;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(NetworkComponent))]
 class AIController : MonoBehaviour
 {
     private CharacterController controller;
 
+    private NetworkComponent networkComponent;
+
     [SerializeField]
     protected LayerMask _playerLayer;
 
-    protected float _gravity = -9.81f;
-    protected float _moveSpeed = 5f;
-    protected float _yVelocity = 0;
+    private float _gravity = -9.81f;
+    private float _yVelocity = 0;
     protected float _lookRadius = 6f;
-    protected float _stopDistance = 2.0f;
+    
 
     protected Transform target;
 
-    void Start()
+    protected virtual void Awake()
+    {
+        networkComponent = GetComponent<NetworkComponent>();
+    }
+
+    private void Start()
     {
         controller = GetComponent<CharacterController>();
 
-        //multiply movespeed by framerate to be interpreted as "distance over time"
-        _moveSpeed *= Time.fixedDeltaTime;
     }
 
     protected void SearchForPlayersInsideRadius()
@@ -37,13 +41,14 @@ class AIController : MonoBehaviour
     }
 
 
-    protected void Move(Vector3 _direction, float _speed)
+    protected virtual void Move(Vector3 _direction, float _speed)
     {
+        _direction.y = 0;
         //set the forward direction of our vector to our target direction
         transform.forward = _direction;
 
-        //create a movement vector with our new direction, multiplied by the desired speed to move this by
-        Vector3 _movement = transform.forward * _speed;
+        //create a movement vector with our new direction, multiplied by the desired distance to move this by
+        Vector3 _movement = transform.forward * _speed * Time.fixedDeltaTime;
 
         if(controller.isGrounded)
         {
@@ -55,6 +60,7 @@ class AIController : MonoBehaviour
         _movement.y = _yVelocity;
 
         controller.Move(_movement);
+        ServerSend.UpdateEnemyPosition(networkComponent.NetworkId, transform.position);
     }
 
     void OnDrawGizmosSelected()

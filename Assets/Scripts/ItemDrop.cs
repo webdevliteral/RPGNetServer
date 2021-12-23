@@ -12,9 +12,6 @@ public class ItemDrop : Entity
     private void Awake()
     {
         _networkComponent = GetComponent<NetworkComponent>();
-
-        NetworkManager.instance.AddNetworkComponent(_networkComponent);
-        ServerSend.EntityInfo(_networkComponent.NetworkId, _entityPrefabId, transform.position, transform.rotation);
     }
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
