@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-//using UnityEngine.AI;
 
 [RequireComponent(typeof(CharacterController))]
 class AIController : MonoBehaviour
