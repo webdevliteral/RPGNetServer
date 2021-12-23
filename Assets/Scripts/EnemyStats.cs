@@ -15,8 +15,7 @@ public class EnemyStats : EntityStats
 
         for(int i = 0; i < lootDropPrefabs.Count; i++)
         {
-            int prefabId = (int)lootDropPrefabs[i].GetComponent<Entity>().PrefabId;
-            SpawnLoot(NetworkManager.instance.prefabs[prefabId]);
+            SpawnLoot(lootDropPrefabs[i]);
         }
 
     }

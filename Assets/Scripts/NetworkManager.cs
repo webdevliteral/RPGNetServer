@@ -47,18 +47,32 @@ public class NetworkManager : MonoBehaviour
 
     public void AddNetworkComponent(NetworkComponent component)
     {
+        if (component == null)
+        {
+            throw new ArgumentNullException("component");
+        }
+        
+        if (component.NetworkId == 0)
+        {
+            throw new ArgumentNullException("NetworkComponent has network id 0");
+        }
+        
         networkComponents.Add(component.NetworkId, component);
     }
 
     public bool RemoveNetworkComponent(NetworkComponent component)
     {
+        if (component == null)
+        {
+            throw new ArgumentNullException("component");
+        }
+        
         return networkComponents.Remove(component.NetworkId);
     }
 
     public NetworkComponent FindNetworkComponent(uint networkId)
     {
-        var component = networkComponents[networkId];
-        if (component != null)
+        if (networkComponents.TryGetValue(networkId, out NetworkComponent component))
         {
             return component;
         }
