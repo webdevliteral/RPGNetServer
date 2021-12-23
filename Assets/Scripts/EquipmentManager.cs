@@ -25,7 +25,7 @@ public class EquipmentManager : MonoBehaviour
         equipped = new RegularEquipment[slots];
     }
 
-    public void Equip(RegularEquipment equipItem)
+    public void Equip(RegularEquipment equipItem, int fromCID, int id)
     {
         RegularEquipment oldItem = null;
         int slotIndex = (int)equipItem.equipSlot;
@@ -40,6 +40,8 @@ public class EquipmentManager : MonoBehaviour
             OnEquipmentChanged.Invoke(equipItem, oldItem);
 
         equipped[slotIndex] = equipItem;
+
+        ServerSend.ItemEquipped(fromCID, id);
     }
 
     public void Unequip(int slotIndex)

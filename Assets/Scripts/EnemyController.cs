@@ -5,14 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+
 class EnemyController : AIController
 {
     [SerializeField]
-    Combat enemyCombat;
+    private Combat enemyCombat;
 
-    private void Awake()
+    protected float _stopDistance = 2.0f;
+    protected float _moveSpeed = 3.5f;
+
+    protected override void Awake()
     {
+        base.Awake();
         enemyCombat = GetComponent<Combat>();
+        
     }
     void FixedUpdate()
     {
@@ -25,8 +31,7 @@ class EnemyController : AIController
             PlayerStats _playerStats = target.GetComponent<PlayerStats>();
             if (_distance.sqrMagnitude >= _stopDistance * _stopDistance)
             {
-                Move(_distance.normalized, moveSpeed);
-                ServerSend.UpdateEnemyPosition(gameObject.GetComponent<Enemy>().id, transform.position);
+                Move(_distance.normalized, _moveSpeed);
             }
             else
             {
@@ -41,7 +46,7 @@ class EnemyController : AIController
     private bool TargetInLineOfSight(Transform _target)
     {
 
-        if (Physics.Raycast(transform.position, _target.transform.position, out RaycastHit _hit, lookRadius))
+        if (Physics.Raycast(transform.position, _target.transform.position, out RaycastHit _hit, _lookRadius))
         {
             if (_hit.collider != null)
             {

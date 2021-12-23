@@ -130,9 +130,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 146451878}
-  - component: {fileID: 146451882}
-  - component: {fileID: 146451880}
-  - component: {fileID: 146451879}
   - component: {fileID: 146451877}
   - component: {fileID: 146451876}
   m_Layer: 0
@@ -166,6 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4274b17a8039147ae17c52aba55873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 8611467844914570594, guid: 24a623eb0c8f3d8429cb79e502e24054, type: 3}
+  - {fileID: 8611467844914570594, guid: 8a3256f6f3a12a848a3443f4f31c64dc, type: 3}
+  - {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54, type: 3}
+  - {fileID: 284073984168042100, guid: c1ca30307112da348ac4b844f1bfcb58, type: 3}
   playerPrefab: {fileID: 8611467844914570594, guid: 24a623eb0c8f3d8429cb79e502e24054,
     type: 3}
   enemyPrefab: {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54,
@@ -186,49 +188,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &146451879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146451875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d97fa4a02b5754bb4106ad395d7f32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54,
-    type: 3}
-  enemyRespawnCooldown: 20
---- !u!114 &146451880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146451875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56429fbcc9321f9488402e664ac007d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localItems: []
---- !u!114 &146451882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146451875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee67f1a1108c7d54e81131f1105919d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcPrefab: {fileID: 8611467844914570594, guid: 8a3256f6f3a12a848a3443f4f31c64dc,
-    type: 3}
-  npcRespawnCooldown: 20
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

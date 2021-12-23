@@ -88,6 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212606147804292961}
+  - component: {fileID: 7673474687825675911}
   - component: {fileID: 5544674004553184688}
   - component: {fileID: 3013900500313223034}
   - component: {fileID: 4080737244005278309}
@@ -115,6 +116,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7673474687825675911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f03934194946846b663ad3bf485c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5544674004553184688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,10 +143,6 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 256
-  gravity: -9.18
-  moveSpeed: 5
-  jumpSpeed: 5
-  lookRadius: 6
   enemyCombat: {fileID: 0}
 --- !u!114 &3013900500313223034
 MonoBehaviour:
@@ -147,13 +156,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a94a0e09355e0db45b6a922aaedf326a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  isFocused: 0
-  hasInteracted: 0
-  interactRadius: 0
-  interactionType: 0
-  entityName: 
-  gravity: 0
+  _entityPrefabId: 2
+  _entityName: Angry Cube
+  interactRadius: 3
+  gravity: -9.81
   moveSpeed: 0
 --- !u!114 &4080737244005278309
 MonoBehaviour:
@@ -168,9 +174,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
-  currentHealth: 100
+  currentHealth: 0
   damage:
-    baseValue: 0
+    baseValue: 1
   armor:
     baseValue: 0
   lootDropPrefabs:
@@ -187,8 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92ec9c99732416418b4c618e07d1e6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  castSpeed: 0
 --- !u!143 &3295653811711352889
 CharacterController:
   m_ObjectHideFlags: 0

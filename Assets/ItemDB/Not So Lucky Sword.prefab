@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 284073984168042102}
+  - component: {fileID: 18014841708163802}
   - component: {fileID: 284073984168042103}
   m_Layer: 0
   m_Name: Not So Lucky Sword
@@ -32,6 +33,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 22.555, z: 0}
+--- !u!114 &18014841708163802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284073984168042100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f03934194946846b663ad3bf485c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &284073984168042103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,11 +57,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 320ef2fe090406d4a9fe8199c477964d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
-  isFocused: 0
-  hasInteracted: 0
-  interactRadius: 3
-  interactionType: 0
   item: {fileID: 11400000, guid: bfbc6cc0bec257140b27867c269c291d, type: 2}
 --- !u!1 &284073985645531311
 GameObject:

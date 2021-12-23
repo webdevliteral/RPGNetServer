@@ -1,64 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(NetworkComponent))]
 class AIController : MonoBehaviour
 {
-    CharacterController controller;
-    [SerializeField]
-    private LayerMask _playerLayer; 
-    public float gravity = -9.18f;
-    public float moveSpeed = 5f;
-    public float jumpSpeed = 5f;
-    private float yVelocity = 0;
-    public float lookRadius = 6f;
-    protected float _stopDistance = 2.0f;
-    protected Transform target;
-    //Transform target;
-    //NavMeshAgent agent;
+    private CharacterController controller;
 
-    void Start()
+    private NetworkComponent networkComponent;
+
+    [SerializeField]
+    protected LayerMask _playerLayer;
+
+    private float _gravity = -9.81f;
+    private float _yVelocity = 0;
+    protected float _lookRadius = 6f;
+    
+
+    protected Transform target;
+
+    protected virtual void Awake()
     {
-        //agent = GetComponent<NavMeshAgent>();
+        networkComponent = GetComponent<NetworkComponent>();
+    }
+
+    private void Start()
+    {
         controller = GetComponent<CharacterController>();
-        moveSpeed *= Time.fixedDeltaTime;
+
     }
 
     protected void SearchForPlayersInsideRadius()
     {
-        //Define what happens if you're in the search radius AND
-        //you can draw a line from enemy to player
-        Collider[] hits = Physics.OverlapSphere(transform.position, lookRadius, _playerLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _lookRadius, _playerLayer);
+
         foreach (Collider hit in hits)
         {
             target = hit.transform;
+            return;
         }
     }
 
 
-    protected void Move(Vector3 _direction, float _speed)
+    protected virtual void Move(Vector3 _direction, float _speed)
     {
-        _direction.y = 0f;
+        _direction.y = 0;
+        //set the forward direction of our vector to our target direction
         transform.forward = _direction;
-        Vector3 _movement =transform.forward * _speed;
+
+        //create a movement vector with our new direction, multiplied by the desired distance to move this by
+        Vector3 _movement = transform.forward * _speed * Time.fixedDeltaTime;
 
         if(controller.isGrounded)
         {
-            yVelocity = 0f;
+            _yVelocity = 0f;
         }
-        yVelocity += gravity;
 
-        _movement.y = yVelocity;
+        //apply gravity to this
+        _yVelocity += _gravity;
+        _movement.y = _yVelocity;
+
         controller.Move(_movement);
+        ServerSend.UpdateEnemyPosition(networkComponent.NetworkId, transform.position);
     }
 
     void OnDrawGizmosSelected()
     {
+        //set the gizmo color
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, lookRadius);
+        //draw a sphere that color around the _lookRadius of this
+        Gizmos.DrawWireSphere(transform.position, _lookRadius);
     }
 }

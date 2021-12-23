@@ -88,6 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212606147804292961}
+  - component: {fileID: 8244978103318453456}
   - component: {fileID: 6547453085002550639}
   - component: {fileID: 7658026733673540080}
   - component: {fileID: 4960314061581055372}
@@ -114,6 +115,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8244978103318453456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f03934194946846b663ad3bf485c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6547453085002550639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  isFocused: 0
 --- !u!114 &7658026733673540080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,12 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321b549eff4e9d645aea8b965c1d1aca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  isFocused: 0
-  hasInteracted: 0
-  interactRadius: 3
-  interactionType: 0
-  entityName: 
+  _entityPrefabId: 1
   gravity: -9.18
   moveSpeed: 5
 --- !u!114 &4960314061581055372

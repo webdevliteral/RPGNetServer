@@ -5,8 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkComponent))]
 public class EntityStats : MonoBehaviour
 {
+    private NetworkComponent _networkComponent;
+
     public int maxHealth = 100;
     public int currentHealth;
     public Stat damage;
@@ -15,6 +18,11 @@ public class EntityStats : MonoBehaviour
     void Awake()
     {
         currentHealth = maxHealth;
+    }
+
+    protected virtual void Start()
+    {
+        _networkComponent = GetComponent<NetworkComponent>();
     }
 
     void FixedUpdate()
@@ -31,13 +39,14 @@ public class EntityStats : MonoBehaviour
         if (currentHealth <= 0)
         {
             HandleDeath();
+            ServerSend.UpdateEntityStats(_networkComponent.NetworkId, currentHealth);
             return;
         }
+        ServerSend.UpdateEntityStats(_networkComponent.NetworkId, currentHealth);
     }
 
     public virtual void HandleDeath()
     {
-        //TODO: handle death
-        currentHealth = maxHealth;
+        Destroy(gameObject);
     }
 }

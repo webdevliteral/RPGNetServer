@@ -12,15 +12,10 @@ public class RegularEquipment : Item
     public override void Use(int _fromCID)
     {
         base.Use(_fromCID);
-        Debug.Log(NetworkManager.instance.Server.Clients[_fromCID].player);
         if (NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager != null)
         {
-            
-            NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager.Equip(this);
-            ServerSend.ItemEquipped(_fromCID, id);
+            NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager.Equip(this, _fromCID, id);
         }
-        
-        
     }
 }
 

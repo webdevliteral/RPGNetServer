@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+[RequireComponent(typeof(NetworkComponent))]
+public class Player : Entity
 {
-
     public Focus focus;
     public Inventory inventory;
     public EquipmentManager equipmentManager;
     public int id;
     public string username;
     public CharacterController charControl;
-    public float gravity = -9.18f;
-    public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
 
     private bool[] inputs;
     private float yVelocity = 0;
 
-    private void Start()
+    private void Awake()
+    {
+        _networkComponent = GetComponent<NetworkComponent>();
+    }
+
+    protected override void Start()
     {
         if (inventory == null)
             inventory = gameObject.AddComponent<Inventory>();
@@ -27,7 +30,7 @@ public class Player : MonoBehaviour
         gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
         moveSpeed *= Time.fixedDeltaTime;
         jumpSpeed *= Time.fixedDeltaTime;
-        focus = GetComponent<Focus>();
+        focus = GetComponent<Focus>();   
     }
 
     public void Initialize(int _id, string _username)
