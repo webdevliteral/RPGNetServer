@@ -47,6 +47,16 @@ public class NetworkManager : MonoBehaviour
 
     public void AddNetworkComponent(NetworkComponent component)
     {
+        if (component == null)
+        {
+            throw new ArgumentNullException("component");
+        }
+        
+        if (component.NetworkId == 0)
+        {
+            throw new ArgumentNullException("NetworkComponent has network id 0");
+        }
+        
         networkComponents.Add(component.NetworkId, component);
     }
 
