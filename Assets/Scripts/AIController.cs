@@ -41,8 +41,8 @@ class AIController : MonoBehaviour
         //set the forward direction of our vector to our target direction
         transform.forward = _direction;
 
-        //create a movement vector with our new direction, multiplied by the desired speed to move this by
-        Vector3 _movement = transform.forward * _speed;
+        //create a movement vector with our new direction, multiplied by the desired distance to move this by
+        Vector3 _movement = transform.forward * _speed * Time.fixedDeltaTime;
 
         if(controller.isGrounded)
         {
