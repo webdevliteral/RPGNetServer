@@ -57,8 +57,7 @@ public class NetworkManager : MonoBehaviour
 
     public NetworkComponent FindNetworkComponent(uint networkId)
     {
-        var component = networkComponents[networkId];
-        if (component != null)
+        if (networkComponents.TryGetValue(networkId, out NetworkComponent component))
         {
             return component;
         }
