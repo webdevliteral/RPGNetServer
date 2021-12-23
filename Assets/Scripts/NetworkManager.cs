@@ -62,6 +62,11 @@ public class NetworkManager : MonoBehaviour
 
     public bool RemoveNetworkComponent(NetworkComponent component)
     {
+        if (component == null)
+        {
+            throw new ArgumentNullException("component");
+        }
+        
         return networkComponents.Remove(component.NetworkId);
     }
 
