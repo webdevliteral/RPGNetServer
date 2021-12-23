@@ -9,7 +9,7 @@ public class Enemy : NPC
 {
     private EnemyStats myStats;
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         myStats = GetComponent<EnemyStats>();

@@ -16,7 +16,6 @@ public class Item : ScriptableObject
 
     public void Dispose(int _fromCID)
     {
-        Debug.Log("DISPOSING!");
         NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Inventory>().items.Remove(this);
     }
 }

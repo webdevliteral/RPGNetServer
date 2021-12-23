@@ -26,7 +26,7 @@ public abstract class Entity : MonoBehaviour, IInteractable
 
     //private Focus focus;
 
-    public virtual void Start()
+    protected virtual void Start()
     {
         //focus = GetComponent<Focus>();
 

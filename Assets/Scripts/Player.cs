@@ -11,8 +11,6 @@ public class Player : Entity
     public int id;
     public string username;
     public CharacterController charControl;
-    public float gravity = -9.18f;
-    public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
 
     private bool[] inputs;
@@ -23,7 +21,7 @@ public class Player : Entity
         _networkComponent = GetComponent<NetworkComponent>();
     }
 
-    private void Start()
+    protected override void Start()
     {
         if (inventory == null)
             inventory = gameObject.AddComponent<Inventory>();

@@ -97,8 +97,7 @@ public class ServerHandle
         {
             if(NetworkManager.instance.Server.Clients[_fromCID].player != null)
             {
-                Vector3 distance = NetworkManager.instance.Server.Clients[_fromCID].player.transform.position - component.transform.position;
-                component.GetComponent<IInteractable>().Interact(_fromCID, distance);
+                component.GetComponent<IInteractable>().Interact(_fromCID, NetworkManager.instance.Server.Clients[_fromCID].player.transform.position);
             }
             
         }
