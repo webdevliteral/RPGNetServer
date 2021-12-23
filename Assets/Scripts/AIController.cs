@@ -20,8 +20,6 @@ class AIController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
 
-        //multiply movespeed by framerate to be interpreted as "distance over time"
-        _moveSpeed *= Time.fixedDeltaTime;
     }
 
     protected void SearchForPlayersInsideRadius()
