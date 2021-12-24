@@ -3,10 +3,12 @@
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class Item : ScriptableObject
 {
-    public int id;
-    new public string name = "New Item";
-    public Sprite icon = null;
-    public bool isDefaultItem = false;
+    public int Id => id;
+    [SerializeField] private int id;
+
+    [SerializeField] new private string name = "New Item";
+    [SerializeField] private Sprite icon = null;
+    [SerializeField] private bool isDefaultItem = false;
 
     public virtual void Use(int _fromCID)
     {

@@ -104,52 +104,18 @@ public class ServerHandle
         }
     }
 
-    public static void OnUseItemRequested(int _fromClient, Packet _packet)
+    public static void OnUseItemSlotRequested(int _fromClient, Packet _packet)
     {
-        int _fromCID = _packet.ReadInt();
-        int _itemID = _packet.ReadInt();
-        string _itemName = _packet.ReadString();
-        Inventory _playerInventory = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Inventory>();
+        int fromCID = _packet.ReadInt();
+        int slotIndex = _packet.ReadInt();
+        Inventory playerInventory = NetworkManager.instance.Server.Clients[fromCID].player.GetComponent<Inventory>();
 
-        for (int i = 0; i < _playerInventory.items.Count; i++)
+        if (slotIndex < 0 || slotIndex >= playerInventory.bagSpace)
         {
-            if(_playerInventory.items[i].id == _itemID)
-            {
-                _playerInventory.items[i].Use(_fromCID);
-                //We don't want to spam use items if we have multiple,
-                //so just return out of the method after first use
-                return;
-            }
-            else
-            {
-                Debug.Log("That item doesn't exist in the players inventory...");
-            }
-            
+            Debug.Log($"Invalid slot index {slotIndex} received from {fromCID}");
         }
-    }
 
-    public static void OnEquipItemRequested(int _fromClient, Packet _packet)
-    {
-        int _fromCID = _packet.ReadInt();
-        int _itemID = _packet.ReadInt();
-        Inventory _playerInventory = NetworkManager.instance.Server.Clients[_fromCID].player.GetComponent<Inventory>();
-
-        for (int i = 0; i < _playerInventory.items.Count; i++)
-        {
-            if (_playerInventory.items[i].id == _itemID)
-            {
-                Debug.Log($"{NetworkManager.instance.Server.Clients[_fromCID].player.username} equipped item {_playerInventory.items[i].name}");
-                
-                //We don't want to spam use items if we have multiple,
-                //so just return out of the method after first use
-                return;
-            }
-            else
-            {
-                Debug.Log("That item doesn't exist in the players inventory...");
-            }
-
-        }
+        playerInventory.items[slotIndex].Use(fromCID);
     }
 
     public static void KillEnemy(int _fromClient, Packet _packet)
