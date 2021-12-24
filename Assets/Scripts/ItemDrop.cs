@@ -26,7 +26,7 @@ public class ItemDrop : Entity
             {
                 Debug.Log("Removed item from world");
                 Destroy(gameObject);
-                ServerSend.ItemLooted(_fromCID, NetworkId, item.id);
+                ServerSend.ItemLooted(_fromCID, NetworkId, item.Id);
             }
 
             return true;

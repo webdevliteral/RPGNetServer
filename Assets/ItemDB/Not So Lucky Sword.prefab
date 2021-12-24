@@ -57,6 +57,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 320ef2fe090406d4a9fe8199c477964d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entityPrefabId: 4
+  _entityName: 
+  interactRadius: 3
+  gravity: -9.18
+  moveSpeed: 5
   item: {fileID: 11400000, guid: bfbc6cc0bec257140b27867c269c291d, type: 2}
 --- !u!1 &284073985645531311
 GameObject:

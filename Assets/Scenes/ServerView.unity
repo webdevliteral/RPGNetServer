@@ -168,6 +168,7 @@ MonoBehaviour:
   - {fileID: 8611467844914570594, guid: 8a3256f6f3a12a848a3443f4f31c64dc, type: 3}
   - {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54, type: 3}
   - {fileID: 284073984168042100, guid: c1ca30307112da348ac4b844f1bfcb58, type: 3}
+  - {fileID: 284073984168042100, guid: 0db320093ea3d5b448864bc2ed54428b, type: 3}
   playerPrefab: {fileID: 8611467844914570594, guid: 24a623eb0c8f3d8429cb79e502e24054,
     type: 3}
   enemyPrefab: {fileID: 8611467844914570594, guid: b18ee323596aff74bbcbce59a159fa54,
