@@ -14,7 +14,7 @@ public class RegularEquipment : Item
         base.Use(_fromCID);
         if (NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager != null)
         {
-            NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager.Equip(this, _fromCID, id);
+            NetworkManager.instance.Server.Clients[_fromCID].player.equipmentManager.Equip(this, _fromCID, Id);
         }
     }
 }
