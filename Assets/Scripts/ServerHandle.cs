@@ -89,6 +89,7 @@ public class ServerHandle
 
     public static void RequestInteract(int _fromClient, Packet _packet)
     {
+        Debug.Log("INTERACT");
         int _fromCID = _packet.ReadInt();
         uint networkId = _packet.ReadUint();
 
