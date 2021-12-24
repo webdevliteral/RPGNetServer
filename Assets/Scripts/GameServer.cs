@@ -15,8 +15,8 @@ public class GameServer
     private Dictionary<int, ClientRef> clients = new Dictionary<int, ClientRef>();
     public Dictionary<int, ClientRef> Clients => clients;
 
-    private Dictionary<int, Action<int, Packet>> packetHandlers;
-    public Dictionary<int, Action<int, Packet>> PacketHandlers => packetHandlers;
+    private Dictionary<ClientPackets, Action<int, Packet>> packetHandlers;
+    public Dictionary<ClientPackets, Action<int, Packet>> PacketHandlers => packetHandlers;
     public void StartServer(int maxPlayers, int port)
     {
         //set the server variables
@@ -129,16 +129,16 @@ public class GameServer
             clients.Add(i, new ClientRef(i));
         }
         
-        packetHandlers = new Dictionary<int, Action<int, Packet>>()
+        packetHandlers = new Dictionary<ClientPackets, Action<int, Packet>>()
         {
-                { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
-                { (int)ClientPackets.userSessionConfirmed, ServerHandle.UserSessionReceived },
-                { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
-                { (int)ClientPackets.requestFocus, ServerHandle.FocusGranted },
-                { (int)ClientPackets.clearFocus, ServerHandle.ClearFocus },
-                { (int)ClientPackets.killEnemy, ServerHandle.KillEnemy},
-                { (int)ClientPackets.requestInteract, ServerHandle.RequestInteract},
-                { (int)ClientPackets.requestUseItemSlot, ServerHandle.OnUseItemSlotRequested}
+                { ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
+                { ClientPackets.userSessionConfirmed, ServerHandle.UserSessionReceived },
+                { ClientPackets.playerMovement, ServerHandle.PlayerMovement },
+                { ClientPackets.requestFocus, ServerHandle.FocusGranted },
+                { ClientPackets.clearFocus, ServerHandle.ClearFocus },
+                { ClientPackets.requestInteract, ServerHandle.RequestInteract},
+                { ClientPackets.requestUseItemSlot, ServerHandle.OnUseItemSlotRequested}
+
         };
         Debug.Log("Initialized packets.");
     }

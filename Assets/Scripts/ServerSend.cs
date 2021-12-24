@@ -78,7 +78,7 @@ public class ServerSend
     public static void WelcomePacket(int _toCID, string _msg)
     {
         //create an instance of a packet
-        using (Packet _packet = new Packet((int)ServerPackets.welcome))
+        using (Packet _packet = new Packet(ServerPackets.welcome))
         {
             _packet.Write(_msg);
             _packet.Write(_toCID);
@@ -89,7 +89,7 @@ public class ServerSend
 
     public static void UserSession(int _toCID, string _username)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.userSession))
+        using (Packet _packet = new Packet(ServerPackets.userSession))
         {
             _packet.Write(_toCID);
             _packet.Write(_username);
@@ -100,7 +100,7 @@ public class ServerSend
 
     public static void SpawnPlayer(int _toCID, Player _player)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.spawnPlayer))
+        using (Packet _packet = new Packet(ServerPackets.spawnPlayer))
         {
             _packet.Write(_player.id);
             _packet.Write(_player.username);
@@ -116,7 +116,7 @@ public class ServerSend
 
     public static void SpawnEntity(uint networkId, uint prefabId, Vector3 position, Quaternion rotation)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.EntityInfo))
+        using (Packet _packet = new Packet(ServerPackets.spawnEntity))
         {
             _packet.Write(networkId);
             _packet.Write(prefabId);
@@ -128,68 +128,9 @@ public class ServerSend
             
     }
 
-    //------------------------ NPC DATA
-
-    public static void SpawnNPC(GameObject _npc)
-    {
-        using (Packet _packet = new Packet((int)ServerPackets.spawnNPC))
-        {
-            _packet.Write(_npc.GetComponent<NPC>().EntityName);
-            _packet.Write(_npc.GetComponent<EntityStats>().maxHealth);
-            _packet.Write(_npc.GetComponent<EntityStats>().currentHealth);
-            _packet.Write(_npc.transform.position);
-            _packet.Write(_npc.transform.rotation);
-
-            SendTCPDataToAll(_packet);
-        }
-    }
-
-    //ENEMY DATA
-    public static void SpawnEnemy(GameObject _enemy)
-    {
-        using (Packet _packet = new Packet((int)ServerPackets.spawnEnemy))
-        {
-            _packet.Write(_enemy.GetComponent<Enemy>().EntityName);
-            _packet.Write(_enemy.GetComponent<EnemyStats>().maxHealth);
-            _packet.Write(_enemy.GetComponent<EnemyStats>().currentHealth);
-            _packet.Write(_enemy.transform.position);
-            _packet.Write(_enemy.transform.rotation);
-
-            SendTCPDataToAll(_packet);
-        }
-    }
-
-    public static void SendEnemyData(int _toCID, GameObject _enemy)
-    {
-        using (Packet _packet = new Packet((int)ServerPackets.loadEnemiesOnClient))
-        {
-            _packet.Write(_enemy.GetComponent<Enemy>().EntityName);
-            _packet.Write(_enemy.GetComponent<EnemyStats>().maxHealth);
-            _packet.Write(_enemy.GetComponent<EnemyStats>().currentHealth);
-            _packet.Write(_enemy.transform.position);
-            _packet.Write(_enemy.transform.rotation);
-
-            SendTcpData(_toCID, _packet);
-        }
-    }
-
-    public static void SendNPCData(int _toCID, GameObject _npc)
-    {
-        using (Packet _packet = new Packet((int)ServerPackets.loadNPCsOnClient))
-        {
-            _packet.Write(_npc.GetComponent<NPC>().EntityName);
-            _packet.Write(_npc.GetComponent<EntityStats>().maxHealth);
-            _packet.Write(_npc.GetComponent<EntityStats>().currentHealth);
-            _packet.Write(_npc.transform.position);
-            _packet.Write(_npc.transform.rotation);
-
-            SendTcpData(_toCID, _packet);
-        }
-    }
-
     public static void UpdateEntityStats(uint networkId, int healthValue)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.updateEntityStats))
+        using (Packet _packet = new Packet(ServerPackets.updateEntityStats))
         {
             _packet.Write(networkId);
             _packet.Write(healthValue);
@@ -200,7 +141,7 @@ public class ServerSend
 
     public static void UpdateEnemyPosition(uint networkId, Vector3 _position)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.updateEnemyPosition))
+        using (Packet _packet = new Packet(ServerPackets.updateEntityPosition))
         {
             _packet.Write(networkId);
             _packet.Write(_position);
@@ -209,20 +150,10 @@ public class ServerSend
         }
     }
 
-    public static void KillEnemy(uint networkId)
-    {
-        using (Packet _packet = new Packet((int)ServerPackets.killEnemy))
-        {
-            _packet.Write(networkId);
-
-            SendTCPDataToAll(_packet);
-        }
-    }
-
     public static void PlayerPosition(Player _player)
     {
         //create an instance of a packet
-        using (Packet _packet = new Packet((int)ServerPackets.playerPosition))
+        using (Packet _packet = new Packet(ServerPackets.playerPosition))
         {
             _packet.Write(_player.id);
             _packet.Write(_player.transform.position);
@@ -234,7 +165,7 @@ public class ServerSend
     public static void PlayerRotation(Player _player)
     {
         //create an instance of a packet
-        using (Packet _packet = new Packet((int)ServerPackets.playerRotation))
+        using (Packet _packet = new Packet(ServerPackets.playerRotation))
         {
             _packet.Write(_player.id);
             _packet.Write(_player.transform.rotation);
@@ -246,7 +177,7 @@ public class ServerSend
     public static void PlayerDisconnected(int _pid)
     {
         //create an instance of a packet
-        using (Packet _packet = new Packet((int)ServerPackets.playerDisconnected))
+        using (Packet _packet = new Packet(ServerPackets.playerDisconnected))
         {
             _packet.Write(_pid);
 
@@ -256,7 +187,7 @@ public class ServerSend
 
     public static void InteractableTooFar(int _toCID)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.interactableTooFar))
+        using (Packet _packet = new Packet(ServerPackets.interactableTooFar))
         {
             _packet.Write("You need to move closer to interact with that!");
 
@@ -266,7 +197,7 @@ public class ServerSend
 
     public static void InteractionConfirmed(int _toCID, string _msg)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.interactionConfirmed))
+        using (Packet _packet = new Packet(ServerPackets.interactionConfirmed))
         {
             _packet.Write(_toCID);
             _packet.Write(_msg);
@@ -277,7 +208,7 @@ public class ServerSend
 
     public static void SendClientsLootData(int _prefabId, int _itemID, uint _networkId, Vector3 _lootSpawnPos)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.sendClientsLootData))
+        using (Packet _packet = new Packet(ServerPackets.sendClientsLootData))
         {
             _packet.Write(_prefabId);
             _packet.Write(_itemID);
@@ -290,7 +221,7 @@ public class ServerSend
 
     public static void ItemLooted(int _fromCID, uint _networkId, int _itemID)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.itemLooted))
+        using (Packet _packet = new Packet(ServerPackets.itemLooted))
         {
             _packet.Write(_fromCID);
             _packet.Write(_networkId);
@@ -301,7 +232,7 @@ public class ServerSend
     }
     public static void ItemEquipped(int _toCID, int _itemID)
     {
-        using (Packet _packet = new Packet((int)ServerPackets.itemEquipped))
+        using (Packet _packet = new Packet(ServerPackets.itemEquipped))
         {
             _packet.Write(_toCID);
             _packet.Write(_itemID);

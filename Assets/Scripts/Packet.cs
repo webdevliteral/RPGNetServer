@@ -13,17 +13,11 @@ public enum ServerPackets
     playerRotation,
     playerDisconnected,
     interactableTooFar,
-    spawnEnemy,
-    EntityInfo,
-    spawnNPC,
+    spawnEntity,
     updateEntityStats,
-    updateEnemyPosition,
-    loadEnemiesOnClient,
-    loadNPCsOnClient,
+    updateEntityPosition,
     focusGranted,
     clearFocus,
-    requestAttack,
-    killEnemy,
     interactionConfirmed,
     lootGranted,
     sendClientsLootData,
@@ -37,11 +31,8 @@ public enum ClientPackets
     welcomeReceived,
     playerMovement,
     userSessionConfirmed,
-    enemySpawned,
-    loadEnemyData,
     clearFocus,
     requestInteract,
-    killEnemy,
     updateEnemyStats,
     interactableTooFar,
     requestFocus,
@@ -63,12 +54,12 @@ public class Packet : IDisposable
 
         /// Creates a new packet with a given ID. Used for sending.
         /// <param name="_id">The packet ID.</param>
-        public Packet(int _id)
+        public Packet(ServerPackets packetId)
         {
             buffer = new List<byte>(); // Intitialize buffer
             readPos = 0; // Set readPos to 0
 
-            Write(_id); // Write packet id to the buffer
+            Write((int)packetId); // Write packet id to the buffer
         }
 
         /// Creates a packet from which data can be read. Used for receiving.

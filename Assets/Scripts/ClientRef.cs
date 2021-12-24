@@ -144,7 +144,7 @@ public class ClientRef
                     using (Packet _packet = new Packet(_packetBytes))
                     {
                         int _packetId = _packet.ReadInt();
-                        if (NetworkManager.instance.Server.PacketHandlers.TryGetValue(_packetId, out var packetHandler))
+                        if (NetworkManager.instance.Server.PacketHandlers.TryGetValue((ClientPackets)_packetId, out var packetHandler))
                         {
                             packetHandler(cid, _packet);
                         }
@@ -198,7 +198,7 @@ public class ClientRef
                 using (Packet _packet = new Packet(_packetBytes))
                 {
                     int _packetId = _packet.ReadInt();
-                    NetworkManager.instance.Server.PacketHandlers[_packetId](cid, _packet);
+                    NetworkManager.instance.Server.PacketHandlers[(ClientPackets)_packetId](cid, _packet);
                 }
             });
         }
