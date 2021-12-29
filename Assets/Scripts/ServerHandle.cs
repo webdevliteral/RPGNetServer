@@ -71,13 +71,10 @@ public class ServerHandle
     public static void FocusGranted(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();
-        int _eID = _packet.ReadInt();
-        string _eName = _packet.ReadString();
+        uint networkId = _packet.ReadUint();
 
         //set focus
-        Debug.Log($"Client {_fromCID} is trying to focus entity: {_eID} with EntityName: {_eName}");
-        
-
+        NetworkManager.instance.Server.Clients[_fromCID].player.focus.target = NetworkManager.instance.FindNetworkComponent(networkId).gameObject.transform;
     }
 
     public static void ClearFocus(int _fromClient, Packet _packet)
@@ -89,7 +86,6 @@ public class ServerHandle
 
     public static void RequestInteract(int _fromClient, Packet _packet)
     {
-        Debug.Log("INTERACT");
         int _fromCID = _packet.ReadInt();
         uint networkId = _packet.ReadUint();
 
@@ -116,6 +112,13 @@ public class ServerHandle
         }
 
         playerInventory.items[slotIndex].Use(fromCID);
+    }
+
+    public static void OnUseSpellRequested(int _fromClient, Packet _packet)
+    {
+        int fromCID = _packet.ReadInt();
+        int activeSpellId = _packet.ReadInt();
+        NetworkManager.instance.Server.Clients[fromCID].player.GetComponent<ActiveSpellbook>().Spells[activeSpellId].Use(fromCID);
     }
 
     public static void KillEnemy(int _fromClient, Packet _packet)

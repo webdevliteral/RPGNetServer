@@ -137,7 +137,8 @@ public class GameServer
                 { ClientPackets.requestFocus, ServerHandle.FocusGranted },
                 { ClientPackets.clearFocus, ServerHandle.ClearFocus },
                 { ClientPackets.requestInteract, ServerHandle.RequestInteract},
-                { ClientPackets.requestUseItemSlot, ServerHandle.OnUseItemSlotRequested}
+                { ClientPackets.requestUseItemSlot, ServerHandle.OnUseItemSlotRequested},
+                { ClientPackets.requestAbilityUse, ServerHandle.OnUseSpellRequested}
 
         };
         Debug.Log("Initialized packets.");

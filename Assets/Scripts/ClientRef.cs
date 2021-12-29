@@ -221,12 +221,10 @@ public class ClientRef
                 {
                     ServerSend.SpawnPlayer(CID, _client.player);
                 }
-                else
-                {
-                    ServerSend.SpawnPlayer(_client.CID, player);
-                }
+
+                ServerSend.SpawnPlayer(_client.CID, player);
             }
-        }
+        }   
     }
 
     private void Disconnect()

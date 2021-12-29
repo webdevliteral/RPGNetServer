@@ -1,14 +1,28 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
-public class Item : ScriptableObject
+public abstract class Item : ScriptableObject
 {
     public int Id => id;
-    [SerializeField] private int id;
+    [SerializeField] protected int id;
+    
+    [SerializeField] protected ItemType type;
+    public ItemType Type => type;
 
-    [SerializeField] new private string name = "New Item";
-    [SerializeField] private Sprite icon = null;
-    [SerializeField] private bool isDefaultItem = false;
+    [SerializeField] new protected string name = "New Item";
+    public string Name => name;
+    [SerializeField] protected Sprite icon = null;
+    [SerializeField] protected bool isDefaultItem = false;
+    [SerializeField] protected int currencyValue;
+
+    public Item Initialize(string _name, int _currencyValue, int itemId)
+    {
+        name = _name;
+        currencyValue = _currencyValue;
+        id = itemId;
+        type = ItemType.Consumable;
+        return this;
+    }
 
     public virtual void Use(int _fromCID)
     {

@@ -170,7 +170,7 @@ public class ServerSend
             _packet.Write(_player.id);
             _packet.Write(_player.transform.rotation);
 
-            SendUDPDataToAllExceptOne(_player.id, _packet);
+            SendUDPDataToAll(_packet);
         }
     }
 
@@ -206,15 +206,13 @@ public class ServerSend
         }
     }
 
-    public static void SendClientsLootData(int _prefabId, int _itemID, uint _networkId, Vector3 _lootSpawnPos)
+    public static void SendClientsLootData(uint networkId, int itemID, Vector3 position)
     {
         using (Packet _packet = new Packet(ServerPackets.sendClientsLootData))
         {
-            _packet.Write(_prefabId);
-            _packet.Write(_itemID);
-            _packet.Write(_networkId);
-            _packet.Write(_lootSpawnPos);
-
+            _packet.Write(networkId);
+            _packet.Write(itemID);
+            _packet.Write(position);
             SendTCPDataToAll(_packet);
         }
     }

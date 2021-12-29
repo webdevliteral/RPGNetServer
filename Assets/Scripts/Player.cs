@@ -15,6 +15,9 @@ public class Player : Entity
 
     private bool[] inputs;
     private float yVelocity = 0;
+    private float rotationSpeed = 2f;
+    private float smoothRotVelocity;
+    private float smoothTime = 0.1f;
 
     private void Awake()
     {
@@ -25,12 +28,12 @@ public class Player : Entity
     {
         if (inventory == null)
             inventory = gameObject.AddComponent<Inventory>();
-        if(equipmentManager == null)
+        if (equipmentManager == null)
             equipmentManager = gameObject.AddComponent<EquipmentManager>();
         gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
         moveSpeed *= Time.fixedDeltaTime;
         jumpSpeed *= Time.fixedDeltaTime;
-        focus = GetComponent<Focus>();   
+        focus = GetComponent<Focus>();
     }
 
     public void Initialize(int _id, string _username)
@@ -67,20 +70,33 @@ public class Player : Entity
 
     private void Move(Vector2 _inputDirection)
     {
+        //
+        Vector3 playerRotation = transform.eulerAngles + new Vector3(0, _inputDirection.x * rotationSpeed, 0);
+        transform.eulerAngles = playerRotation;
+        //Vector3 _moveDirection = new Vector3(_inputDirection.x, 0f, _inputDirection.y).normalized;
         Vector3 _moveDirection = transform.right * _inputDirection.x + transform.forward * _inputDirection.y;
-        _moveDirection *= moveSpeed;
+        if (_moveDirection.sqrMagnitude >= 0.1f * 0.1f)
+        {
+            //float targetRotation = Mathf.Atan2(_moveDirection.x, _moveDirection.z) * Mathf.Rad2Deg;
+            //float finalRotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref smoothRotVelocity, smoothTime);
+            //transform.rotation = Quaternion.Euler(0f, finalRotation, 0f);
+            _moveDirection *= moveSpeed;
+        }
 
-        if(charControl.isGrounded)
+        if (charControl.isGrounded)
         {
             yVelocity = 0f;
-            if(inputs[4])
+            if (inputs[4])
             {
                 yVelocity = jumpSpeed;
             }
         }
         yVelocity += gravity;
         _moveDirection.y = yVelocity;
+
         charControl.Move(_moveDirection);
+
+        //charControl.Move(_moveDirection);
 
         ServerSend.PlayerPosition(this);
         ServerSend.PlayerRotation(this);

@@ -37,7 +37,8 @@ public enum ClientPackets
     interactableTooFar,
     requestFocus,
     interactionConfirmed,
-    requestUseItemSlot
+    requestUseItemSlot,
+    requestAbilityUse
 }
 public class Packet : IDisposable
     {

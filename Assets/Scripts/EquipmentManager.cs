@@ -5,16 +5,8 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviour
 {
-    public static EquipmentManager instance;
     public event Action<RegularEquipment, RegularEquipment> OnEquipmentChanged;
     Inventory inventory;
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
-            Destroy(this);
-    }
 
     RegularEquipment[] equipped;
     void Start()
@@ -27,6 +19,12 @@ public class EquipmentManager : MonoBehaviour
 
     public void Equip(RegularEquipment equipItem, int fromCID, int id)
     {
+        switch (equipItem.Type)
+        {
+            case ItemType.SpellPiece:
+                InitializeSpellPieceData(equipItem as SpellPiece);
+                break;
+        }
         RegularEquipment oldItem = null;
         int slotIndex = (int)equipItem.equipSlot;
 
@@ -56,6 +54,13 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
+    private void InitializeSpellPieceData(SpellPiece pieceToInit)
+    {
+        SpellComponent spellComponent = gameObject.AddComponent<SpellComponent>();
+        spellComponent.InitializeSpellComponent(pieceToInit.SpellAbility);
+        
+        GetComponent<ActiveSpellbook>().AddSpellToActiveSpells(spellComponent, (int)pieceToInit.equipSlot);
+    }
 }
 
 

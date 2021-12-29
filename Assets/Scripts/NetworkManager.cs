@@ -38,6 +38,10 @@ public class NetworkManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = Constants.TARGET_FPS;
         server.StartServer(10, 3600);
+
+        //Retrieve all data starting from specified index. 0 for all.
+        Spellbook.instance.RetrieveSpellDataFromServer(0);
+        ItemDatabase.instance.RetrieveItemDataFromServer(0);
     }
 
     private void OnApplicationQuit()
@@ -115,18 +119,9 @@ public class NetworkManager : MonoBehaviour
         return HTTP.GET(url);
     }
 
-
-    struct AccountData
+    public string HTTPGet(string uri)
     {
-        public string email;
-        public string password;
-        public string username;
-
-        public static string HandleUserJSON(string _json)
-        {
-            AccountData jObj = JsonUtility.FromJson<AccountData>(_json);
-            return jObj.username;
-        }
+        return HTTP.GET(uri);
     }
     
     class HTTP
@@ -142,6 +137,19 @@ public class NetworkManager : MonoBehaviour
             {
                 return reader.ReadToEnd();
             }
+        }
+    }
+
+    struct AccountData
+    {
+        public string email;
+        public string password;
+        public string username;
+
+        public static string HandleUserJSON(string _json)
+        {
+            AccountData jObj = JsonUtility.FromJson<AccountData>(_json);
+            return jObj.username;
         }
     }
 }

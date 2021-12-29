@@ -29,4 +29,12 @@ class Combat : MonoBehaviour
             attackCooldown = 1f / attackSpeed;
         }
     }
+
+    public void AttackWithSpell(EntityStats targetStats, int baseDamage)
+    {
+        float baseModifier = myStats.damage.GetValue();
+        baseModifier *= 0.25f;
+        float finalDamage = baseDamage * baseModifier;
+        targetStats.TakeDamage((int)finalDamage);
+    }
 }
