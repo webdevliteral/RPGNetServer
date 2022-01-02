@@ -26,7 +26,6 @@ class AIController : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<CharacterController>();
-
     }
 
     protected void SearchForPlayersInsideRadius()

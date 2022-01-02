@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(NetworkComponent))]
 public class Player : Entity
@@ -15,28 +13,34 @@ public class Player : Entity
 
     private bool[] inputs;
     private float yVelocity = 0;
+    private float rotationSpeed = 2f;
+    private QuestLog questLog;
+    public QuestLog CurrentQuests => questLog;
 
     private void Awake()
     {
         _networkComponent = GetComponent<NetworkComponent>();
+        questLog = GetComponent<QuestLog>();
     }
 
     protected override void Start()
     {
         if (inventory == null)
             inventory = gameObject.AddComponent<Inventory>();
-        if(equipmentManager == null)
+        if (equipmentManager == null)
             equipmentManager = gameObject.AddComponent<EquipmentManager>();
         gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
         moveSpeed *= Time.fixedDeltaTime;
         jumpSpeed *= Time.fixedDeltaTime;
-        focus = GetComponent<Focus>();   
+        focus = GetComponent<Focus>();
     }
 
     public void Initialize(int _id, string _username)
     {
         id = _id;
         username = _username;
+
+        //TODO: register spells based on input to the server, client has too much control right now
 
         //a bool array the length of all readable inputs
         inputs = new bool[5];
@@ -67,19 +71,25 @@ public class Player : Entity
 
     private void Move(Vector2 _inputDirection)
     {
+        Vector3 playerRotation = transform.eulerAngles + new Vector3(0, _inputDirection.x * rotationSpeed, 0);
+        transform.eulerAngles = playerRotation;
         Vector3 _moveDirection = transform.right * _inputDirection.x + transform.forward * _inputDirection.y;
-        _moveDirection *= moveSpeed;
+        if (_moveDirection.sqrMagnitude >= 0.1f * 0.1f)
+        {
+            _moveDirection *= moveSpeed;
+        }
 
-        if(charControl.isGrounded)
+        if (charControl.isGrounded)
         {
             yVelocity = 0f;
-            if(inputs[4])
+            if (inputs[4])
             {
                 yVelocity = jumpSpeed;
             }
         }
         yVelocity += gravity;
         _moveDirection.y = yVelocity;
+
         charControl.Move(_moveDirection);
 
         ServerSend.PlayerPosition(this);

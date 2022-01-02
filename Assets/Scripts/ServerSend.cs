@@ -170,7 +170,7 @@ public class ServerSend
             _packet.Write(_player.id);
             _packet.Write(_player.transform.rotation);
 
-            SendUDPDataToAllExceptOne(_player.id, _packet);
+            SendUDPDataToAll(_packet);
         }
     }
 
@@ -206,15 +206,13 @@ public class ServerSend
         }
     }
 
-    public static void SendClientsLootData(int _prefabId, int _itemID, uint _networkId, Vector3 _lootSpawnPos)
+    public static void SendClientsLootData(uint networkId, int itemID, Vector3 position)
     {
         using (Packet _packet = new Packet(ServerPackets.sendClientsLootData))
         {
-            _packet.Write(_prefabId);
-            _packet.Write(_itemID);
-            _packet.Write(_networkId);
-            _packet.Write(_lootSpawnPos);
-
+            _packet.Write(networkId);
+            _packet.Write(itemID);
+            _packet.Write(position);
             SendTCPDataToAll(_packet);
         }
     }
@@ -236,6 +234,44 @@ public class ServerSend
         {
             _packet.Write(_toCID);
             _packet.Write(_itemID);
+
+            SendTcpData(_toCID, _packet);
+        }
+    }
+
+    public static bool SendQuestToClient(int _toCID, Quest quest)
+    {
+        if (NetworkManager.instance.Server.Clients[_toCID].player.CurrentQuests.FindQuestInQuestlog(quest.id))
+            return false;
+
+        using (Packet _packet = new Packet(ServerPackets.questToClient))
+        {
+            _packet.Write(_toCID);
+            _packet.Write(quest.id);
+
+            SendTcpData(_toCID, _packet);
+            return true;
+        }
+    }
+
+    public static void UseNPCDialogue(int _toCID, uint networkId, string dialogue)
+    {
+        using (Packet _packet = new Packet(ServerPackets.useNpcDialogue))
+        {
+            _packet.Write(_toCID);
+            _packet.Write(networkId);
+            _packet.Write(dialogue);
+
+            SendTcpData(_toCID, _packet);
+        }
+    }
+
+    public static void UpdatePlayerQuestLog(int _toCID, Quest quest)
+    {
+        using (Packet _packet = new Packet(ServerPackets.updateQuestLog))
+        {
+            _packet.Write(_toCID);
+            _packet.Write(quest.id);
 
             SendTcpData(_toCID, _packet);
         }

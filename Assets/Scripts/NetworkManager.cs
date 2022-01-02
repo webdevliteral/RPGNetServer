@@ -38,6 +38,11 @@ public class NetworkManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = Constants.TARGET_FPS;
         server.StartServer(10, 3600);
+
+        //Retrieve all data starting from specified index. 0 for all.
+        Spellbook.instance.RetrieveSpellDataFromServer(0);
+        ItemDatabase.instance.RetrieveItemDataFromServer(0);
+        QuestAtlas.instance.RetrieveQuestDataFromServer(0);
     }
 
     private void OnApplicationQuit()
@@ -115,6 +120,25 @@ public class NetworkManager : MonoBehaviour
         return HTTP.GET(url);
     }
 
+    public string HTTPGet(string uri)
+    {
+        return HTTP.GET(uri);
+    }
+    
+    class HTTP
+    {
+        public static string GET(string _uri)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_uri);
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+    }
 
     struct AccountData
     {
@@ -126,22 +150,6 @@ public class NetworkManager : MonoBehaviour
         {
             AccountData jObj = JsonUtility.FromJson<AccountData>(_json);
             return jObj.username;
-        }
-    }
-    
-    class HTTP
-    {
-        //HTTP&WEB
-        public static string GET(string _uri)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_uri);
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
         }
     }
 }

@@ -154,8 +154,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityPrefabId: 1
+  _entityName: Great Questgiver
+  interactRadius: 3
   gravity: -9.18
   moveSpeed: 5
+  assignableQuests:
+  - {fileID: 0}
 --- !u!114 &4960314061581055372
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,7 +9,8 @@ public class ClientRef
 {
     public static int dataBufferSize = 4096;
 
-    
+    public static event Action OnPlayerSpawned;
+
     public int CID;
     public Player player;
     public Enemy enemy;
@@ -221,12 +222,11 @@ public class ClientRef
                 {
                     ServerSend.SpawnPlayer(CID, _client.player);
                 }
-                else
-                {
-                    ServerSend.SpawnPlayer(_client.CID, player);
-                }
+
+                ServerSend.SpawnPlayer(_client.CID, player);
+                OnPlayerSpawned?.Invoke();
             }
-        }
+        }   
     }
 
     private void Disconnect()
