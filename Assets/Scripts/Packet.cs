@@ -22,7 +22,10 @@ public enum ServerPackets
     lootGranted,
     sendClientsLootData,
     itemLooted,
-    itemEquipped
+    itemEquipped,
+    questToClient,
+    updateQuestLog,
+    useNpcDialogue
 }
 
 //Sent from client to server.
@@ -38,7 +41,8 @@ public enum ClientPackets
     requestFocus,
     interactionConfirmed,
     requestUseItemSlot,
-    requestAbilityUse
+    requestAbilityUse,
+    acceptQuest
 }
 public class Packet : IDisposable
     {

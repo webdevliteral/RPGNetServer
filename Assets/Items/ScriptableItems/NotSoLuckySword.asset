@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 319d16c0b75e59a40adc5c814d2e4616, type: 3}
-  m_Name: Fireball Variant
+  m_Script: {fileID: 11500000, guid: 5f32da428f21bf94ab2c209423d37ef8, type: 3}
+  m_Name: NotSoLuckySword
   m_EditorClassIdentifier: 
-  name: Fireball
+  id: 1
+  name: Not So Lucky Sword
+  icon: {fileID: 0}
+  isDefaultItem: 0
+  equipSlot: 9
+  armorModifier: 0
+  damageModifier: 1

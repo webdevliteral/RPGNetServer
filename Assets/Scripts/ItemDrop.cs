@@ -21,7 +21,7 @@ public class ItemDrop : Entity
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
     {
-        Debug.Log($"Tryin to loot item: {item.name}");
+        Debug.Log($"Tryin' to loot item: {item.name}");
 
         bool pickedUp = NetworkManager.instance.Server.Clients[_fromCID].player.inventory.Add(item);
 

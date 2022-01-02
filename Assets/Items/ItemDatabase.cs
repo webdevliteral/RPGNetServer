@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class ItemDatabase : MonoBehaviour
 {
@@ -18,8 +19,6 @@ public class ItemDatabase : MonoBehaviour
         public string equipSlot;
         public int attachedSpellId;
         public int itemId;
-        //TODO: retrieve AttachedAbilityId
-        //and attach ability to any SpellPiece
     }
 
     private void Awake()
@@ -46,41 +45,55 @@ public class ItemDatabase : MonoBehaviour
         }
     }
 
-    public void CheckItemReferences()
-    {
-        Debug.Log("CURRENT ITEM DATABASE:");
-        for(int i = 0; i < itemReferences.Count; i++)
-        {
-            Debug.Log($"Name: {itemReferences[i].Name} | ID: {itemReferences[i].Id}");
-        }
-    }
-
     public void RetrieveItemDataFromServer(int itemId)
     {
         string itemData = NetworkManager.instance.HTTPGet($"http://127.0.0.1:3100/item/{itemId}");
         if (itemData != "null")
         {
             ItemData newItemObj = JsonUtility.FromJson<ItemData>(itemData);
-            switch(newItemObj.type)
+            string savePath = $"Assets/Items/ItemDB/{newItemObj.name}.asset";
+
+
+            switch (newItemObj.type)
             {
-                case "Consumable":  
+                case "Consumable":
                     Debug.Log($"Loaded Consumable with id: {newItemObj.itemId}");
                     break;
                 case "RegularEquipment":
                     RegularEquipment newEquipment = ScriptableObject.CreateInstance<RegularEquipment>();
                     newEquipment = newEquipment.Initialize(newItemObj.name, newItemObj.currencyValue, newItemObj.itemId,
                         newItemObj.damageValue, newItemObj.armorValue, newItemObj.equipSlot);
-                    itemReferences.Add(newEquipment);
+
+                    if (!System.IO.File.Exists(savePath))
+                        AssetDatabase.CreateAsset(newEquipment, savePath);
+
+                    RegularEquipment finalEquipment = AssetDatabase.LoadAssetAtPath<RegularEquipment>(savePath);
+                    itemReferences.Add(finalEquipment);
                     break;
                 case "SpellPiece":
                     SpellPiece newSpellPiece = ScriptableObject.CreateInstance<SpellPiece>();
                     newSpellPiece = newSpellPiece.Initialize(newItemObj.name, newItemObj.currencyValue, newItemObj.itemId,
                         newItemObj.damageValue, newItemObj.armorValue, newItemObj.equipSlot, newItemObj.attachedSpellId);
-                    itemReferences.Add(newSpellPiece);
+
+                    if (!System.IO.File.Exists(savePath))
+                        AssetDatabase.CreateAsset(newSpellPiece, savePath);
+
+                    SpellPiece finalSpellPiece = AssetDatabase.LoadAssetAtPath<SpellPiece>(savePath);
+                    itemReferences.Add(finalSpellPiece);
+                    break;
+                case "QuestItem":
+                    QuestItem newQuestItem = ScriptableObject.CreateInstance<QuestItem>();
+                    newQuestItem.Initialize(newItemObj.name, newItemObj.currencyValue, newItemObj.itemId);
+
+                    if (!System.IO.File.Exists(savePath))
+                        AssetDatabase.CreateAsset(newQuestItem, savePath);
+
+                    QuestItem finalQuestItem = AssetDatabase.LoadAssetAtPath<QuestItem>(savePath);
+                    itemReferences.Add(newQuestItem);
                     break;
             }
             itemId++;
-            RetrieveItemDataFromServer(itemId);            
+            RetrieveItemDataFromServer(itemId);
         }
         else
         {
@@ -89,4 +102,4 @@ public class ItemDatabase : MonoBehaviour
     }
 }
 
-public enum ItemType { Consumable, RegularEquipment, SpellPiece }
+public enum ItemType { Consumable, RegularEquipment, SpellPiece, QuestItem}

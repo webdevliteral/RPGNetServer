@@ -183,9 +183,10 @@ GameObject:
   - component: {fileID: 1212606147804292961}
   - component: {fileID: 3244919045462140412}
   - component: {fileID: 257345741035949171}
-  - component: {fileID: 1389609434891966730}
   - component: {fileID: 1549596798853889766}
   - component: {fileID: 188168969863201722}
+  - component: {fileID: 3196864115020833574}
+  - component: {fileID: 1389609434891966730}
   - component: {fileID: 4275847527765037165}
   - component: {fileID: 7474231715138914666}
   m_Layer: 8
@@ -247,20 +248,6 @@ MonoBehaviour:
   username: 
   charControl: {fileID: 7474231715138914666}
   jumpSpeed: 9
---- !u!114 &1389609434891966730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8611467844914570594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5948b070793bfce4e8b489fccae9f746, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  isFocused: 0
 --- !u!114 &1549596798853889766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,6 +278,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895ea7e2f9b11b14c8eefd0a077341ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spells: []
+--- !u!114 &3196864115020833574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b4f2151c82f99478856ce2eae9159a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1389609434891966730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611467844914570594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5948b070793bfce4e8b489fccae9f746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  isFocused: 0
 --- !u!114 &4275847527765037165
 MonoBehaviour:
   m_ObjectHideFlags: 0

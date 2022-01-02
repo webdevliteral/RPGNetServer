@@ -13,6 +13,13 @@ public class Inventory : MonoBehaviour
     public delegate void OnItemChanged();
     public OnItemChanged onItemChangedCallback;
 
+    private Player _player;
+
+    private void Start()
+    {
+        _player = GetComponent<Player>();
+    }
+
     public bool Add(Item _item)
     {
         if(items.Count >= bagSpace)
@@ -24,7 +31,7 @@ public class Inventory : MonoBehaviour
         
         onItemChangedCallback?.Invoke();
 
-        Debug.Log($"ID: {_item} was added to {GetComponent<Player>().username}s inventory.");
+        Debug.Log($"ID: {_item} was added to {_player.username}s inventory.");
         return true;
     }
 

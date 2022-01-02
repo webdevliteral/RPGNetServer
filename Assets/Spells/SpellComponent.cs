@@ -28,6 +28,7 @@ public class SpellComponent : MonoBehaviour
 
             if (distance.sqrMagnitude <= spell.MaxDistance * spell.MaxDistance)
             {
+                //TODO: SpellComponent shouldn't be able to directly cache these variables, but they should be accessible from memory or a reference after the first call, ideally before
                 Combat playerCombat = playerFocus.GetComponent<Combat>();
                 Combat enemyCombat = playerFocus.target.GetComponent<Combat>();
                 EnemyStats enemyStats = playerFocus.target.GetComponent<EnemyStats>();

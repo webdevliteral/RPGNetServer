@@ -238,4 +238,42 @@ public class ServerSend
             SendTcpData(_toCID, _packet);
         }
     }
+
+    public static bool SendQuestToClient(int _toCID, Quest quest)
+    {
+        if (NetworkManager.instance.Server.Clients[_toCID].player.CurrentQuests.FindQuestInQuestlog(quest.id))
+            return false;
+
+        using (Packet _packet = new Packet(ServerPackets.questToClient))
+        {
+            _packet.Write(_toCID);
+            _packet.Write(quest.id);
+
+            SendTcpData(_toCID, _packet);
+            return true;
+        }
+    }
+
+    public static void UseNPCDialogue(int _toCID, uint networkId, string dialogue)
+    {
+        using (Packet _packet = new Packet(ServerPackets.useNpcDialogue))
+        {
+            _packet.Write(_toCID);
+            _packet.Write(networkId);
+            _packet.Write(dialogue);
+
+            SendTcpData(_toCID, _packet);
+        }
+    }
+
+    public static void UpdatePlayerQuestLog(int _toCID, Quest quest)
+    {
+        using (Packet _packet = new Packet(ServerPackets.updateQuestLog))
+        {
+            _packet.Write(_toCID);
+            _packet.Write(quest.id);
+
+            SendTcpData(_toCID, _packet);
+        }
+    }
 }

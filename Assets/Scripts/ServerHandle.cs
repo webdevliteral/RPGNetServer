@@ -121,6 +121,19 @@ public class ServerHandle
         NetworkManager.instance.Server.Clients[fromCID].player.GetComponent<ActiveSpellbook>().Spells[activeSpellId].Use(fromCID);
     }
 
+    public static void OnQuestAccepted(int _fromClient, Packet _packet)
+    {
+        int fromCID = _packet.ReadInt();
+        int questIdToAccept = _packet.ReadInt();
+        if (QuestAtlas.instance.AllQuests[questIdToAccept] != null)
+        {
+            if (NetworkManager.instance.Server.Clients[fromCID].player.CurrentQuests.FindQuestInQuestlog(questIdToAccept))
+                return;
+            NetworkManager.instance.Server.Clients[fromCID].player.CurrentQuests.AddQuest(QuestAtlas.instance.AllQuests[questIdToAccept]);
+        }
+            
+    }
+
     public static void KillEnemy(int _fromClient, Packet _packet)
     {
         int _fromCID = _packet.ReadInt();

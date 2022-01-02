@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(NetworkComponent))]
 public class Player : Entity
@@ -16,12 +14,13 @@ public class Player : Entity
     private bool[] inputs;
     private float yVelocity = 0;
     private float rotationSpeed = 2f;
-    private float smoothRotVelocity;
-    private float smoothTime = 0.1f;
+    private QuestLog questLog;
+    public QuestLog CurrentQuests => questLog;
 
     private void Awake()
     {
         _networkComponent = GetComponent<NetworkComponent>();
+        questLog = GetComponent<QuestLog>();
     }
 
     protected override void Start()
@@ -40,6 +39,8 @@ public class Player : Entity
     {
         id = _id;
         username = _username;
+
+        //TODO: register spells based on input to the server, client has too much control right now
 
         //a bool array the length of all readable inputs
         inputs = new bool[5];
@@ -70,16 +71,11 @@ public class Player : Entity
 
     private void Move(Vector2 _inputDirection)
     {
-        //
         Vector3 playerRotation = transform.eulerAngles + new Vector3(0, _inputDirection.x * rotationSpeed, 0);
         transform.eulerAngles = playerRotation;
-        //Vector3 _moveDirection = new Vector3(_inputDirection.x, 0f, _inputDirection.y).normalized;
         Vector3 _moveDirection = transform.right * _inputDirection.x + transform.forward * _inputDirection.y;
         if (_moveDirection.sqrMagnitude >= 0.1f * 0.1f)
         {
-            //float targetRotation = Mathf.Atan2(_moveDirection.x, _moveDirection.z) * Mathf.Rad2Deg;
-            //float finalRotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref smoothRotVelocity, smoothTime);
-            //transform.rotation = Quaternion.Euler(0f, finalRotation, 0f);
             _moveDirection *= moveSpeed;
         }
 
@@ -95,8 +91,6 @@ public class Player : Entity
         _moveDirection.y = yVelocity;
 
         charControl.Move(_moveDirection);
-
-        //charControl.Move(_moveDirection);
 
         ServerSend.PlayerPosition(this);
         ServerSend.PlayerRotation(this);

@@ -15,6 +15,10 @@ public class NetworkComponent : MonoBehaviour
     protected virtual void Awake()
     {
         _networkId = networkIdGenerator++;
+    }
+
+    private void Start()
+    {
         NetworkManager.instance.AddNetworkComponent(this);
     }
 }

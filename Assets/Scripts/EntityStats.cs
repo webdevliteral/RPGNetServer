@@ -25,10 +25,6 @@ public class EntityStats : MonoBehaviour
         _networkComponent = GetComponent<NetworkComponent>();
     }
 
-    void FixedUpdate()
-    {
-        
-    }
     public void TakeDamage(int _damage)
     {
         _damage -= armor.GetValue();

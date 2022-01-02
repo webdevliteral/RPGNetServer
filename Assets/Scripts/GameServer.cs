@@ -138,8 +138,8 @@ public class GameServer
                 { ClientPackets.clearFocus, ServerHandle.ClearFocus },
                 { ClientPackets.requestInteract, ServerHandle.RequestInteract},
                 { ClientPackets.requestUseItemSlot, ServerHandle.OnUseItemSlotRequested},
-                { ClientPackets.requestAbilityUse, ServerHandle.OnUseSpellRequested}
-
+                { ClientPackets.requestAbilityUse, ServerHandle.OnUseSpellRequested},
+                { ClientPackets.acceptQuest, ServerHandle.OnQuestAccepted}
         };
         Debug.Log("Initialized packets.");
     }

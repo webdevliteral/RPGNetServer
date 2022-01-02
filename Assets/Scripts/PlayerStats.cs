@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayerStats : EntityStats
+﻿public class PlayerStats : EntityStats
 {
     // Start is called before the first frame update
     protected override void Start()

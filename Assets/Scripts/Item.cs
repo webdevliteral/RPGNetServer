@@ -11,7 +11,6 @@ public abstract class Item : ScriptableObject
 
     [SerializeField] new protected string name = "New Item";
     public string Name => name;
-    [SerializeField] protected Sprite icon = null;
     [SerializeField] protected bool isDefaultItem = false;
     [SerializeField] protected int currencyValue;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Spellbook : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Spellbook : MonoBehaviour
         public float castTime;
         public int id;
     }
+
     public Ability FindSpellById(int id)
     {
         if (spellBook[id] != null)
@@ -34,10 +36,18 @@ public class Spellbook : MonoBehaviour
         if (spellData != "null")
         {
             SpellData newSpell = JsonUtility.FromJson<SpellData>(spellData);
-            var newSpellAbility = new Ability();
-            newSpellAbility.InitializeAbility(newSpell.id, newSpell.name, newSpell.maxCastDistance, 
+            string savePath = $"Assets/Spells/SpellData/{newSpell.name}.asset";
+            Ability newSpellAbility = ScriptableObject.CreateInstance<Ability>();
+            newSpellAbility.InitializeAbility(newSpell.id, newSpell.name, newSpell.maxCastDistance,
                 newSpell.baseDamage, newSpell.cooldownLength, newSpell.castTime);
-            spellBook.Add(newSpellAbility);            
+
+            if (!System.IO.File.Exists(savePath))
+                AssetDatabase.CreateAsset(newSpellAbility, savePath);
+
+            Ability finalAbility = (Ability)AssetDatabase.LoadAssetAtPath(savePath, typeof(Ability));
+
+            spellBook.Add(finalAbility);
+
             spellId++;
             RetrieveSpellDataFromServer(spellId);
         }

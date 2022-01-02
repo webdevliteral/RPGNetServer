@@ -42,6 +42,7 @@ public class NetworkManager : MonoBehaviour
         //Retrieve all data starting from specified index. 0 for all.
         Spellbook.instance.RetrieveSpellDataFromServer(0);
         ItemDatabase.instance.RetrieveItemDataFromServer(0);
+        QuestAtlas.instance.RetrieveQuestDataFromServer(0);
     }
 
     private void OnApplicationQuit()
@@ -126,7 +127,6 @@ public class NetworkManager : MonoBehaviour
     
     class HTTP
     {
-        //HTTP&WEB
         public static string GET(string _uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_uri);
