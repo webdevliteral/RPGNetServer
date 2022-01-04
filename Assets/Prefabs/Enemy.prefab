@@ -176,11 +176,11 @@ MonoBehaviour:
   maxHealth: 300
   currentHealth: 0
   damage:
-    baseValue: 1
+    baseValue: 9
   armor:
-    baseValue: 0
+    baseValue: 4
   lootDropPrefabs:
-  - {fileID: 284073984168042100, guid: c1ca30307112da348ac4b844f1bfcb58, type: 3}
+  - {fileID: 968864419354351641, guid: df1a50535d747404aacb3546bfef4dc4, type: 3}
 --- !u!114 &914026757338584785
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,6 +15,8 @@ public class EntityStats : MonoBehaviour
     public Stat damage;
     public Stat armor;
 
+    public event Action OnDeath;
+
     void Awake()
     {
         currentHealth = maxHealth;
@@ -43,6 +45,8 @@ public class EntityStats : MonoBehaviour
 
     public virtual void HandleDeath()
     {
-        Destroy(gameObject);
+        //TODO: make respawns happen
+        OnDeath?.Invoke();
+        gameObject.SetActive(false);
     }
 }

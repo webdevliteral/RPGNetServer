@@ -6,8 +6,9 @@ public class EntityAtlas : MonoBehaviour
 {
     public static EntityAtlas instance;
 
-    private List<GameObject> allEntities = new List<GameObject>();
-    public List<GameObject> AllEntities => allEntities;
+    public List<Enemy> allEnemies = new List<Enemy>();
+
+
 
     private void Awake()
     {
@@ -17,44 +18,9 @@ public class EntityAtlas : MonoBehaviour
             Destroy(this);
     }
 
-    public void RetrieveEntityDataFromServer(int entityId)
+    public Enemy GetEnemyReferenceById(int id)
     {
-        string entityData = NetworkManager.instance.HTTPGet($"http://127.0.0.1:3100/entity/{entityId}");
-
-        if (entityData != "null")
-        {
-            EntityData data = JsonUtility.FromJson<EntityData>(entityData);
-            switch(data.entityType)
-            {
-                case "Enemy":
-                    {
-                        GameObject enemyObj = Instantiate(NetworkManager.instance.enemyPrefab, data.spawnPosition, Quaternion.identity);
-                        enemyObj.name = data.name;
-                        Enemy enemyData = enemyObj.GetComponent<Enemy>();
-
-                        enemyData.Initialize(data);
-                        allEntities.Add(enemyObj);
-                        break;
-                    }
-                    
-                case "NPC":
-                    {
-                        GameObject NPCObj = Instantiate(NetworkManager.instance.npcPrefab, data.spawnPosition, Quaternion.identity);
-
-                        NPCObj.name = data.name;
-                        NPC npcData = NPCObj.GetComponent<NPC>();
-
-                        npcData.Initialize(data);
-                        allEntities.Add(NPCObj);
-                        break;
-                    }
-                    
-            }
-
-            entityId++;
-            RetrieveEntityDataFromServer(entityId);
-        }
-
+        return allEnemies[id];
     }
 
     public struct EntityData

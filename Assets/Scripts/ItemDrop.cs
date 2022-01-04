@@ -8,6 +8,7 @@ using UnityEngine;
 public class ItemDrop : Entity
 {
     public Item item;
+    public event Action OnItemLooted;
 
     private void Awake()
     {
@@ -16,7 +17,8 @@ public class ItemDrop : Entity
 
     new private void Start()
     {
-        ServerSend.SendClientsLootData(_networkComponent.NetworkId, item.Id, transform.position);
+        ServerSend.SpawnEntity(NetworkId, PrefabId, transform.position, Quaternion.identity);
+        ClientRef.OnPlayerSpawned += OnPlayerSpawned;
     }
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)
@@ -29,7 +31,8 @@ public class ItemDrop : Entity
         {
             if(NetworkManager.instance.RemoveNetworkComponent(_networkComponent))
             {
-                Debug.Log("Removed item from world");
+                Debug.Log($"Removed {item.Name} from world");
+                OnItemLooted?.Invoke();
                 Destroy(gameObject);
                 ServerSend.ItemLooted(_fromCID, NetworkId, item.Id);
             }
@@ -38,5 +41,13 @@ public class ItemDrop : Entity
         }
 
         return false;
+    }
+
+    private void OnPlayerSpawned()
+    {
+        ServerSend.SpawnEntity(NetworkId, PrefabId, transform.position, Quaternion.identity);
+
+        //This line is being used for quest items and world items that should be available always
+        //ServerSend.SpawnEntity(NetworkId, PrefabId, transform.position, Quaternion.identity);
     }
 }

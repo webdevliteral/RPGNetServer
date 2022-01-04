@@ -129,7 +129,11 @@ public class ServerHandle
         {
             if (NetworkManager.instance.Server.Clients[fromCID].player.CurrentQuests.FindQuestInQuestlog(questIdToAccept))
                 return;
-            NetworkManager.instance.Server.Clients[fromCID].player.CurrentQuests.AddQuest(QuestAtlas.instance.AllQuests[questIdToAccept]);
+            Quest original = QuestAtlas.instance.AllQuests[questIdToAccept];
+            Quest questReference = ScriptableObject.CreateInstance<Quest>();
+
+            questReference.Initialize(original.id, original.title, original.description, original.rewards, original.experience, original.currencyReward, original.Objectives);
+            NetworkManager.instance.Server.Clients[fromCID].player.CurrentQuests.AddQuest(questReference);
         }
             
     }

@@ -7,7 +7,6 @@ public class QuestLog : MonoBehaviour
     private List<Quest> currentQuests = new List<Quest>();
     public List<Quest> CurrentQuests => currentQuests;
     private Player attachedPlayer;
-
     private void Awake()
     {
         attachedPlayer = GetComponent<Player>();
@@ -15,7 +14,9 @@ public class QuestLog : MonoBehaviour
 
     public void AddQuest(Quest quest)
     {
+        quest.Initialize(attachedPlayer);
         currentQuests.Add(quest);
+        
         ServerSend.UpdatePlayerQuestLog(attachedPlayer.id, quest);
     }
 
@@ -27,5 +28,13 @@ public class QuestLog : MonoBehaviour
                 return currentQuests[i];
         }
         return null;
+    }
+
+    public bool TrackProgress(Quest questToTrack)
+    {
+        if (questToTrack.isCompleted)
+            return true;
+
+        return false;
     }
 }

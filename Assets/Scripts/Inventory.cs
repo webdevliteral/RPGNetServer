@@ -10,8 +10,7 @@ public class Inventory : MonoBehaviour
     public int bagSpace = 20;
     public List<Item> items = new List<Item>();
 
-    public delegate void OnItemChanged();
-    public OnItemChanged onItemChangedCallback;
+    public event Action<Item> OnItemChanged;
 
     private Player _player;
 
@@ -28,8 +27,8 @@ public class Inventory : MonoBehaviour
             return false;
         }
         items.Add(_item);
-        
-        onItemChangedCallback?.Invoke();
+
+        OnItemChanged?.Invoke(_item);
 
         Debug.Log($"ID: {_item} was added to {_player.username}s inventory.");
         return true;
@@ -39,6 +38,6 @@ public class Inventory : MonoBehaviour
     {
         
         items.Remove(item);
-        onItemChangedCallback?.Invoke();
+        OnItemChanged?.Invoke(item);
     }
 }
