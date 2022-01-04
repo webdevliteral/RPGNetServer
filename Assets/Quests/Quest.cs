@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Quest", menuName = "Quests/New Quest")]
 public class Quest : ScriptableObject
 {
     public int id;
@@ -11,11 +10,36 @@ public class Quest : ScriptableObject
     public Item[] rewards;
     public int experience;
     public int currencyReward;
-    public List<int> interactionIds = new List<int>();
-    public ObjectiveType objectiveType;
-    public Objective[] questObjectives;
+    [SerializeField] private List<Objective> objectives = new List<Objective>();
+    public List<Objective> Objectives => objectives;
+    private int tasksLeft;
+    public bool isCompleted;
 
-    public void Initialize(int _id, string _title, string _description, Item[] _rewards, int _experience, int _currencyReward, Objective[] _tasks, int _objectiveType, int _interactId)
+    public void Initialize(Player playerReference)
+    {
+        tasksLeft = objectives.Count;
+        //foreach (KillObjective objective in Objectives)
+        //{
+        //    objective.Initialize();
+        //    objective.OnObjectiveComplete += FinishObjective;
+        //}
+        foreach (CollectObjective objective in Objectives)
+        {
+            objective.Initialize(playerReference);
+            objective.OnObjectiveComplete += FinishObjective;
+        }
+    }
+
+    private void FinishObjective(Objective _objective)
+    {
+        if (objectives.Contains(_objective))
+            _objective.isFinished = true;
+        tasksLeft--;
+        if (tasksLeft <= 0)
+            isCompleted = true;
+    }
+
+    public void Initialize(int _id, string _title, string _description, Item[] _rewards, int _experience, int _currencyReward, List<Objective> _tasks)
     {
         id = _id;
         title = _title;
@@ -23,8 +47,6 @@ public class Quest : ScriptableObject
         rewards = _rewards;
         experience = _experience;
         currencyReward = _currencyReward;
-        questObjectives = _tasks;
-        interactionIds.Add(_interactId);
-        objectiveType = (ObjectiveType)_objectiveType;
+        objectives = _tasks;
     }
 }

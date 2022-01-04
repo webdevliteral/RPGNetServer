@@ -26,8 +26,7 @@ public class QuestAtlas : MonoBehaviour
         {
             QuestData data = JsonUtility.FromJson<QuestData>(questData);
             Quest newQuest = ScriptableObject.CreateInstance<Quest>();
-            newQuest.Initialize(data.id, data.title, data.description, data.rewards, data.experience, data.currency, data.objectives, data.objective, data.collectionId);
-            allQuests.Add(newQuest);
+            newQuest.Initialize(data.id, data.title, data.description, data.rewards, data.experience, data.currency, data.objectives);
 
             string savePath = $"Assets/Quests/QuestData/{data.title}.asset";
 
@@ -53,7 +52,7 @@ public class QuestAtlas : MonoBehaviour
         public int currency;
         public int objective;
         public int collectionId;
-        public Objective[] objectives;
+        public List<Objective> objectives;
         public int npcIdToAttach;
     }
 }

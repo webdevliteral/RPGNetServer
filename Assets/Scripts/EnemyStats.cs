@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
@@ -18,7 +19,6 @@ public class EnemyStats : EntityStats
         }
 
         base.HandleDeath();
-
     }
 
     private ItemDrop SpawnLoot(GameObject itemDropPrefab)

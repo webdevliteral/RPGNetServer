@@ -13,11 +13,11 @@ public class Enemy : Entity
     private EnemyStats myStats;
 
     private Combat playerCombat;
-
     protected override void Start()
     {
         base.Start();
         myStats = GetComponent<EnemyStats>();
+        EntityAtlas.instance.allEnemies.Add(this);
     }
 
     public override bool Interact(int _fromCID, Vector3 _comparePosition)

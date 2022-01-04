@@ -89,7 +89,7 @@ public class ItemDatabase : MonoBehaviour
                         AssetDatabase.CreateAsset(newQuestItem, savePath);
 
                     QuestItem finalQuestItem = AssetDatabase.LoadAssetAtPath<QuestItem>(savePath);
-                    itemReferences.Add(newQuestItem);
+                    itemReferences.Add(finalQuestItem);
                     break;
             }
             itemId++;
@@ -99,6 +99,13 @@ public class ItemDatabase : MonoBehaviour
         {
             Debug.Log("Retrieved all item data successfully!");
         }
+    }
+
+    public Item FindItemById(int id)
+    {
+        if (itemReferences[id] != null)
+            return itemReferences[id];
+        return null;
     }
 }
 
