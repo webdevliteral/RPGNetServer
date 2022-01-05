@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: CollectChickens
   m_EditorClassIdentifier: 
   numberToComplete: 2
-  isFinished: 0
-  goalItem: {fileID: 0}
+  isFinished: 1
+  goalItem: {fileID: 2496141623683569141, guid: 662902623c32f2a47886ffd85eb046b4,
+    type: 3}

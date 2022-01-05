@@ -26,6 +26,6 @@ public class CollectObjective : Objective
 
     public void Initialize(Player player)
     {
-        player.inventory.OnItemChanged += UpdateObjective;
+        player.inventory.OnQuestItemLooted += UpdateObjective;
     }
 }

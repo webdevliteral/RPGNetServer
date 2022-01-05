@@ -30,7 +30,7 @@ public class QuestLog : MonoBehaviour
         return null;
     }
 
-    public bool TrackProgress(Quest questToTrack)
+    public bool IsFinished(Quest questToTrack)
     {
         if (questToTrack.isCompleted)
             return true;

@@ -20,7 +20,7 @@ public class QuestAtlas : MonoBehaviour
 
     public void RetrieveQuestDataFromServer(int questId)
     {
-        string questData = NetworkManager.instance.HTTPGet($"http://127.0.0.1:3100/quest/{questId}");
+        string questData = NetworkManager.HTTP.GET($"http://127.0.0.1:3100/quest/{questId}");
         
         if(questData != "null")
         {

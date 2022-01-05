@@ -20,5 +20,5 @@ MonoBehaviour:
   experience: 375
   currencyReward: 150
   objectives:
-  - {fileID: 11400000, guid: 54fb0f734623b694da0caf94d01b71b1, type: 2}
+  - {fileID: 11400000, guid: 4a36c2a54e3de004ba2bbf0da6793851, type: 2}
   isCompleted: 0

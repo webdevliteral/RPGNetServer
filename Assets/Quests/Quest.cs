@@ -18,19 +18,23 @@ public class Quest : ScriptableObject
     public void Initialize(Player playerReference)
     {
         tasksLeft = objectives.Count;
-        //foreach (KillObjective objective in Objectives)
-        //{
-        //    objective.Initialize();
-        //    objective.OnObjectiveComplete += FinishObjective;
-        //}
+        List<Objective> references = new List<Objective>();
+        for(int i = 0; i < objectives.Count; i++)
+        {
+            references.Add(Instantiate(objectives[i]));
+        }
+
+        objectives = references;
+
         foreach (CollectObjective objective in Objectives)
         {
             objective.Initialize(playerReference);
-            objective.OnObjectiveComplete += FinishObjective;
+            objective.OnObjectiveComplete += HandleObjective;
         }
+
     }
 
-    private void FinishObjective(Objective _objective)
+    private void HandleObjective(Objective _objective)
     {
         if (objectives.Contains(_objective))
             _objective.isFinished = true;

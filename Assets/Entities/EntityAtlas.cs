@@ -8,8 +8,6 @@ public class EntityAtlas : MonoBehaviour
 
     public List<Enemy> allEnemies = new List<Enemy>();
 
-
-
     private void Awake()
     {
         if (instance == null)

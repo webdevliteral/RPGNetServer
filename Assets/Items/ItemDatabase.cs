@@ -47,7 +47,7 @@ public class ItemDatabase : MonoBehaviour
 
     public void RetrieveItemDataFromServer(int itemId)
     {
-        string itemData = NetworkManager.instance.HTTPGet($"http://127.0.0.1:3100/item/{itemId}");
+        string itemData = NetworkManager.HTTP.GET($"http://127.0.0.1:3100/item/{itemId}");
         if (itemData != "null")
         {
             ItemData newItemObj = JsonUtility.FromJson<ItemData>(itemData);
